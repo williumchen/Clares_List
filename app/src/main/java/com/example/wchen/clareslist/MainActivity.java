@@ -2,10 +2,15 @@ package com.example.wchen.clareslist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -15,8 +20,15 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
-
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
+        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
+
+        PostAdaptor pa = new PostAdaptor(createList(30));
+        recList.setAdapter(pa);
     }
 
     @Override
@@ -41,5 +53,19 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
 
         //testing more
+    }
+    private List<posts> createList(int size) {
+
+        List<posts> result = new ArrayList<posts>();
+        for (int i=1; i <= size; i++) {
+            posts post = new posts();
+            post.item = posts.ITEM + i;
+//            post.name = posts.NAME_PREFIX + i;
+            post.description = posts.DESCRIPTION + i;
+//            post.contact = posts.CONTACT + i + "@test.com";
+
+            result.add(post);
+        }
+        return result;
     }
 }
