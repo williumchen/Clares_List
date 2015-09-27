@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class PostAdaptor extends RecyclerView.Adapter<PostAdaptor.PostViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
-    private List<posts> postList;
+    private List<Posts> postList;
 
-    public PostAdaptor(List<posts> postList) {
+    public PostAdapter(List<Posts> postList) {
         this.postList = postList;
     }
 
@@ -24,7 +24,7 @@ public class PostAdaptor extends RecyclerView.Adapter<PostAdaptor.PostViewHolder
 
     @Override
     public void onBindViewHolder(PostViewHolder postViewHolder, int i) {
-        posts post = postList.get(i);
+        Posts post = postList.get(i);
 //        postViewHolder.vName.setText(post.name);
         postViewHolder.vDescription.setText(post.description);
 //        postViewHolder.vContact.setText(post.contact);
@@ -42,9 +42,9 @@ public class PostAdaptor extends RecyclerView.Adapter<PostAdaptor.PostViewHolder
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
 
-//        protected TextView vName;
+        //        protected TextView vName;
         protected TextView vDescription;
-//        protected TextView vContact;
+        //        protected TextView vContact;
         protected TextView vTitle;
 
         public PostViewHolder(View v) {

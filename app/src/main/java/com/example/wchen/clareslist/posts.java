@@ -3,7 +3,7 @@ package com.example.wchen.clareslist;
 /**
  * Created by wchen on 9/24/15.
  */
-public class posts {
+public class Posts {
 //    protected String name;
     protected String description;
 //    protected String contact;
