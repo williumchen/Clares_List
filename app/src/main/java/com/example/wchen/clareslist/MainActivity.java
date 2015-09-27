@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        PostAdaptor pa = new PostAdaptor(createList(30));
+        PostAdapter pa = new PostAdapter(createList(30));
         recList.setAdapter(pa);
     }
 
@@ -54,14 +54,14 @@ public class MainActivity extends Activity {
 
         //testing more
     }
-    private List<posts> createList(int size) {
+    private List<Posts> createList(int size) {
 
-        List<posts> result = new ArrayList<posts>();
+        List<Posts> result = new ArrayList<Posts>();
         for (int i=1; i <= size; i++) {
-            posts post = new posts();
-            post.item = posts.ITEM + i;
+            Posts post = new Posts();
+            post.item = Posts.ITEM + i;
 //            post.name = posts.NAME_PREFIX + i;
-            post.description = posts.DESCRIPTION + i;
+            post.description = Posts.DESCRIPTION + i;
 //            post.contact = posts.CONTACT + i + "@test.com";
 
             result.add(post);
