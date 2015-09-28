@@ -11,15 +11,23 @@ import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView nameTextView;
         protected TextView descriptionTextView;
+        private Context context;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(Context context, View itemView) {
             super(itemView);
 
             nameTextView = (TextView) itemView.findViewById(R.id.item);
             descriptionTextView = (TextView) itemView.findViewById(R.id.description);
+            this.context = context;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            //Toast.makeText(context, nameTextView.getText(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -35,8 +43,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View postView = inflater.inflate(R.layout.card_layout, parent, false);
-        ViewHolder viewHolder = new ViewHolder(postView);
-        return viewHolder;
+        ViewHolder view = new ViewHolder(context, postView);
+        return view;
     }
 
     @Override
@@ -52,7 +60,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public int getItemCount() {
         return mPosts.size();
     }
-
 }
 
 //public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
