@@ -15,6 +15,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView nameTextView;
         protected TextView descriptionTextView;
+        protected ResizableImageView itemImage;
         private Context context;
 
         public ViewHolder(Context context, View itemView) {
@@ -22,6 +23,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             nameTextView = (TextView) itemView.findViewById(R.id.item);
             descriptionTextView = (TextView) itemView.findViewById(R.id.description);
+            //itemImage = (ResizableImageView) itemView.findViewById(R.id.picture);
             this.context = context;
             itemView.setOnClickListener(this);
         }
