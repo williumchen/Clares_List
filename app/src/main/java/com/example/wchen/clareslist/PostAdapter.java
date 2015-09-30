@@ -1,6 +1,7 @@
 package com.example.wchen.clareslist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
+            Intent nextScreen = new Intent(view.getContext(), PostViewActivity.class);
+            nextScreen.putExtra("item", nameTextView.getText().toString());
+            nextScreen.putExtra("description", descriptionTextView.getText().toString());
+            view.getContext().startActivity(nextScreen);
             //Toast.makeText(context, nameTextView.getText(), Toast.LENGTH_SHORT).show();
         }
     }
