@@ -23,12 +23,20 @@
             android:layout_marginLeft="10dp"
             android:textSize="15dp"/>
 
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/item"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawables/mountain_hero" />
+
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10dp"
-            android:layout_below="@+id/item"
+            android:layout_below="@+id/picture"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"/>
 
