@@ -29,7 +29,7 @@
             android:layout_below="@+id/item"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:src="@drawables/mountain_hero" />
+            android:src="" />
 
         <TextView
             android:id="@+id/description"
