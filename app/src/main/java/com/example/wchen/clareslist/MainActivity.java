@@ -8,9 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.parse.ParseObject;
 
 public class MainActivity extends Activity {
 
@@ -21,14 +19,22 @@ public class MainActivity extends Activity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
 
-        PostAdapter pa = new PostAdapter(createList(30));
-        recList.setAdapter(pa);
+
+//        ParseObject testObject = new ParseObject("TestObject");
+//        testObject.put("foo", "bar");
+//        testObject.saveInBackground();
+        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
+        recList.setAdapter(adapter);
+        recList.setLayoutManager(new LinearLayoutManager(this));
+//        recList.setHasFixedSize(true);
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        recList.setLayoutManager(llm);
+//
+//        PostAdapter pa = new PostAdapter(createList(30));
+//        recList.setAdapter(pa);
     }
 
     @Override
@@ -51,21 +57,21 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-
         //testing more
     }
-    private List<Posts> createList(int size) {
-
-        List<Posts> result = new ArrayList<Posts>();
-        for (int i=1; i <= size; i++) {
-            Posts post = new Posts();
-            post.item = Posts.ITEM + i;
-//            post.name = posts.NAME_PREFIX + i;
-            post.description = Posts.DESCRIPTION + i;
-//            post.contact = posts.CONTACT + i + "@test.com";
-
-            result.add(post);
-        }
-        return result;
-    }
 }
+//    private List<Posts> createList(int size) {
+//
+//        List<Posts> result = new ArrayList<Posts>();
+//        for (int i=1; i <= size; i++) {
+//            Posts post = new Posts();
+//            post.item = Posts.ITEM + i;
+//            post.name = posts.NAME_PREFIX + i;
+//            post.description = Posts.DESCRIPTION + i;
+//            post.contact = posts.CONTACT + i + "@test.com";
+//
+//            result.add(post);
+//        }
+//        return result;
+//    }
+//}
