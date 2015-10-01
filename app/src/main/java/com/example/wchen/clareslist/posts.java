@@ -9,6 +9,8 @@ import java.util.List;
 public class Posts {
     protected String mItem;
     protected String mDescription;
+    protected String mCategory;
+    protected String mID;
 
     public Posts(String item, String description) {
         mItem = item;
@@ -23,10 +25,20 @@ public class Posts {
         return mDescription;
     }
 
+    public String getID() {
+        return mID;
+    }
+
+    public String getCategory() { return mCategory; }
+
+    public void setmID(String myID) {
+        mID = myID;
+    }
+
     private static int uniquePostId = 0;
 
     public static List<Posts> createPostsList(int numPosts) {
-        List<Posts> posts = new ArrayList<Posts>();
+        List<Posts> posts = new ArrayList<>();
         for (int i=1; i<=numPosts; i++) {
             posts.add(new Posts("Item" + ++uniquePostId, "Description" + uniquePostId));
         }
