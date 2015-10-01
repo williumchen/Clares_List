@@ -85,6 +85,7 @@ public class ParseWrapper {
 
         parsePost.put("item", post.mItem);
         parsePost.put("description", post.mDescription);
+        parsePost.putg("category", post.mCategory);
 
 //        For future post images
 //        ParseFile picture = new ParseFile("image.png", post.picture);

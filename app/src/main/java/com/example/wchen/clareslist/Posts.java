@@ -39,9 +39,16 @@ public class Posts {
 
     public static List<Posts> createPostsList(int numPosts) {
         List<Posts> posts = new ArrayList<>();
+        Posts dbPost;
+        ParseWrapper pw = new ParseWrapper();
+
+        pw.maybeCreateUser("mjeong@hmc.edu", "password");
+
         for (int i=1; i<=numPosts; i++) {
-            posts.add(new Posts("Item" + ++uniquePostId, "Description" + uniquePostId));
+            dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId);
+            dbPost.mCategory = "Bikes";
+            pw.pushPost(dbPost);
         }
-        return posts;
+        return pw.getPostsInCategory("Bikes");
     }
 }
