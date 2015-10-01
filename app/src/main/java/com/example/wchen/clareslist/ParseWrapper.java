@@ -1,5 +1,7 @@
 package com.example.wchen.clareslist;
 
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
@@ -141,6 +143,10 @@ public class ParseWrapper {
                 }
             }
         });
+
+        for (Posts post : postsList) {
+            Log.v(post.getItem(), post.getDescription());
+        }
         return postsList;
     }
 
