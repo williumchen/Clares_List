@@ -129,9 +129,8 @@ public class ParseWrapper {
                     for (ParseObject post : tempPostsList) {
                         postsList.add(new Posts(post.getString("item"), post.getString("description")));
                     }
-                    //Log.d("score", "Retrieved " + scoreList.size() + " scores");
                 } else {
-                    //Log.d("score", "Error: " + e.getMessage());
+                    // something here
                 }
             }
         });
