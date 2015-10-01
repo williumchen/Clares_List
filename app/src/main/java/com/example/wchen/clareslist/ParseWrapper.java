@@ -3,6 +3,7 @@ package com.example.wchen.clareslist;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -21,6 +22,10 @@ public class ParseWrapper {
 
     public ParseWrapper() {
         userID = null;
+    }
+
+    public void maybeGetCurrentUser() {
+        userID = ParseUser.getCurrentUser().getObjectId();
     }
 
     public void maybeCreateUser(String email, String password) {
