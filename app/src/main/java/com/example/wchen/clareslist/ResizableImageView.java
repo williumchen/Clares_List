@@ -8,6 +8,7 @@ import android.widget.ImageView;
 /**
  * http://stackoverflow.com/questions/5554682/android-imageview-adjusting-parents-height-and-fitting-width
  * Created by wchen on 9/30/15.
+ * Class that extends imageview to preserve aspect ratio and have width fit the width of the device
  */
 
 public class ResizableImageView extends ImageView {

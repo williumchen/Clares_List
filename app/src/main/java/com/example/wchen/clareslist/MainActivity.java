@@ -18,8 +18,9 @@ public class MainActivity extends Activity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
-
+        // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        // Connect adapter
         PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
