@@ -1,6 +1,7 @@
 package com.example.wchen.clareslist;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.parse.Parse;
 
@@ -32,7 +32,9 @@ public class MainActivity extends Activity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
+                Intent submitScreen = new Intent(v.getContext(), SubmitViewActivity.class);
+                v.getContext().startActivity(submitScreen);
+                //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
             }
         });
 //        recList.setHasFixedSize(true);

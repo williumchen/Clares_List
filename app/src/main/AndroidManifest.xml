@@ -28,5 +28,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.wchen.clareslist.MainActivity" />
         </activity>
+        <activity
+            android:name=".SubmitViewActivity"
+            android:label="@string/title_activity_submit_view"
+            android:parentActivityName="com.example.wchen.clareslist.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.MainActivity" />
+        </activity>
     </application>
 </manifest>
