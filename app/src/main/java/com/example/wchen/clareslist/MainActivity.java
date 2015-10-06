@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
         PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
+
         // Setting up floating action button onclicklistener
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.plus);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +45,7 @@ public class MainActivity extends Activity {
 //
 //        PostAdapter pa = new PostAdapter(createList(30));
 //        recList.setAdapter(pa);
+
     }
 
     @Override
@@ -66,10 +68,8 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-        //testing more
     }
 }
-
 
 //    private List<Posts> createList(int size) {
 //

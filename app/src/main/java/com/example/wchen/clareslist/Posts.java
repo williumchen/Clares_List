@@ -10,6 +10,8 @@ public class Posts {
     // Each post will contain an item, description, and optionally an image
     protected String mItem;
     protected String mDescription;
+    protected String mCategory;
+    protected String mID;
 
     // Post constructor takes in item and description (add image later)
     public Posts(String item, String description) {
@@ -27,14 +29,31 @@ public class Posts {
         return mDescription;
     }
 
+    public String getID() {
+        return mID;
+    }
+
+    public String getCategory() { return mCategory; }
+
+    public void setmID(String myID) {
+        mID = myID;
+    }
+
     private static int uniquePostId = 0;
 
     // For testing purposes only: populates an array list with posts
     public static List<Posts> createPostsList(int numPosts) {
-        List<Posts> posts = new ArrayList<Posts>();
+        List<Posts> posts = new ArrayList<>();
+        Posts dbPost;
+        ParseWrapper pw = new ParseWrapper();
+
+        pw.maybeCreateUser("mjeong@hmc.edu", "password");
+
         for (int i=1; i<=numPosts; i++) {
-            posts.add(new Posts("Item" + ++uniquePostId, "Description" + uniquePostId));
+            dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId);
+            dbPost.mCategory = "Bikes";
+            pw.pushPost(dbPost);
         }
-        return posts;
+        return pw.getPostsInCategory("Bikes");
     }
 }
