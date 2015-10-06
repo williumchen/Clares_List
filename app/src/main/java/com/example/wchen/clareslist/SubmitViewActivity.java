@@ -16,17 +16,26 @@ public class SubmitViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_view);
+        // Grab intent on click of floating action button
         Intent intent = getIntent();
-
+        // Initialize parse db, and grab item / desc from view
+        final ParseWrapper parse = new ParseWrapper();
+        final EditText newItem = (EditText) findViewById(R.id.submit_item);
+        final EditText newDesc = (EditText) findViewById(R.id.submit_description);
         final Button submitBtn = (Button) findViewById(R.id.submit_button);
+        // Submit button pushes posts to db
         submitBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                // Convert edittext to strings
+                String itemString = newItem.getText().toString();
+                String descString = newDesc.getText().toString();
+                // Construct new post using item and desc
+                // Add more to this (maybe image?)
+                Posts newPost = new Posts(itemString, descString);
+                // Push post to db
+                parse.pushPost(newPost);
             }
         });
-
-        EditText newItem = (EditText) findViewById(R.id.submit_item);
-        EditText newDesc = (EditText) findViewById(R.id.submit_description);
     }
 
     @Override
