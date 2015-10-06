@@ -34,6 +34,7 @@ public class SubmitViewActivity extends Activity {
                 Posts newPost = new Posts(itemString, descString);
                 // Push post to db
                 parse.pushPost(newPost);
+                finish();
             }
         });
     }
