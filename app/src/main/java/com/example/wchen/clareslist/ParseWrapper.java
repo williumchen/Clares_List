@@ -1,5 +1,7 @@
 package com.example.wchen.clareslist;
 
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
@@ -129,18 +131,30 @@ public class ParseWrapper {
         query.whereEqualTo("category", category);
         query.orderByDescending("createdAt");
         query.setLimit(10);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> tempPostsList, ParseException e) {
-                if (e == null) {
-                    for (ParseObject post : tempPostsList) {
-                        postsList.add(new Posts(post.getString("item"), post.getString("description")));
-                    }
-                    //Log.d("score", "Retrieved " + scoreList.size() + " scores");
-                } else {
-                    //Log.d("score", "Error: " + e.getMessage());
-                }
+        try {
+            for (ParseObject parsePost : query.find()) {
+                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description")));
             }
-        });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> tempPostsList, ParseException e) {
+//                if (e == null) {
+//                    for (ParseObject post : tempPostsList) {
+//                        postsList.add(new Posts(post.getString("item"), post.getString("description")));
+//                    }
+//                    //Log.d("score", "Retrieved " + scoreList.size() + " scores");
+//                } else {
+//                    //Log.d("score", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
+
+        for (Posts post : postsList) {
+            Log.v(post.getItem(), post.getDescription());
+        }
         return postsList;
     }
 

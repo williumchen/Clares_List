@@ -47,7 +47,7 @@ public class Posts {
         Posts dbPost;
         ParseWrapper pw = new ParseWrapper();
 
-        pw.maybeCreateUser("mjeong@hmc.edu", "password");
+        pw.maybeCreateUser("mjeong+1@hmc.edu", "password");
 
         for (int i=1; i<=numPosts; i++) {
             dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId);
