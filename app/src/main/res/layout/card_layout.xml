@@ -30,6 +30,7 @@
             android:layout_below="@+id/item"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:scaleType = "centerCrop"
             android:src="@mipmap/mountains" />
 
         <TextView
