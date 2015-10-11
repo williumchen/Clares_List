@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colors used in layout -->
+    <color name="bkg_card">#FF8800</color>
+    <color name="plus">#B6B6B4</color>
+</resources>

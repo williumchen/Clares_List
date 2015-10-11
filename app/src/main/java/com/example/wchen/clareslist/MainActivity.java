@@ -1,12 +1,16 @@
 package com.example.wchen.clareslist;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.parse.Parse;
-import com.parse.ParseObject;
 
 public class MainActivity extends Activity {
 
@@ -16,12 +20,32 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
-
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
 
-//        ParseObject testObject = new ParseObject("TestObject");
-//        testObject.put("foo", "bar");
-//        testObject.saveInBackground();
+        // Initialize the recycler view
+        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        // Connect adapter
+        PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
+        recList.setAdapter(adapter);
+        recList.setLayoutManager(new LinearLayoutManager(this));
+
+        // Setting up floating action button onclicklistener
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.plus);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent submitScreen = new Intent(v.getContext(), SubmitViewActivity.class);
+                v.getContext().startActivity(submitScreen);
+                //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+//        recList.setHasFixedSize(true);
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        recList.setLayoutManager(llm);
+//
+//        PostAdapter pa = new PostAdapter(createList(30));
+//        recList.setAdapter(pa);
     }
 
     @Override
@@ -44,7 +68,21 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-
-        //testing more
     }
 }
+
+//    private List<Posts> createList(int size) {
+//
+//        List<Posts> result = new ArrayList<Posts>();
+//        for (int i=1; i <= size; i++) {
+//            Posts post = new Posts();
+//            post.item = Posts.ITEM + i;
+//            post.name = posts.NAME_PREFIX + i;
+//            post.description = Posts.DESCRIPTION + i;
+//            post.contact = posts.CONTACT + i + "@test.com";
+//
+//            result.add(post);
+//        }
+//        return result;
+//    }
+//}

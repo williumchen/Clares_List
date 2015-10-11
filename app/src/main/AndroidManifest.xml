@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +20,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PostViewActivity"
+            android:label="@string/title_activity_post_view"
+            android:parentActivityName="com.example.wchen.clareslist.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SubmitViewActivity"
+            android:label="@string/title_activity_submit_view"
+            android:parentActivityName="com.example.wchen.clareslist.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.MainActivity" />
+        </activity>
     </application>
-
 </manifest>
