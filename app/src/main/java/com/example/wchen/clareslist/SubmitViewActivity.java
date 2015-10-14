@@ -34,6 +34,7 @@ public class SubmitViewActivity extends Activity {
                 String itemString = newItem.getText().toString();
                 String descString = newDesc.getText().toString();
                 String categoryString = newCategory.getSelectedItem().toString();
+
                 // Construct new post using item and desc
                 // Add more to this (maybe image?)
                 Posts newPost = new Posts(itemString, descString, categoryString);

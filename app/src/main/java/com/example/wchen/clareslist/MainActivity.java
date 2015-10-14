@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-        PostAdapter adapter = new PostAdapter(pw.getPostsInCategory("Bikes"));
+        PostAdapter adapter = new PostAdapter(pw.getPostsInCategory("Furniture"));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
         // Initialize swipe to refresh layout
@@ -58,10 +58,11 @@ public class MainActivity extends Activity {
 
     void refreshItems() {
         pw = new ParseWrapper();
-        adapter = new PostAdapter(pw.getPostsInCategory("Bikes"));
+        adapter = new PostAdapter(pw.getPostsInCategory("Furniture"));
         recList = (RecyclerView) findViewById(R.id.cardList);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         recList.setAdapter(adapter);
+        recList.setLayoutManager(new LinearLayoutManager(this));
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
