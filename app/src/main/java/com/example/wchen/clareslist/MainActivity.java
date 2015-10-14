@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        // Swipe to refresh widget
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -55,7 +56,7 @@ public class MainActivity extends Activity {
             }
         });
     }
-
+    // Reload the posts from parse and reload recyclerview
     void refreshItems() {
         pw = new ParseWrapper();
         adapter = new PostAdapter(pw.getPostsInCategory("Furniture"));

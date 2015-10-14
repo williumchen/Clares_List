@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/furniture"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/furniture" />
+    <Button
+        android:id="@+id/appliances"
+        android:layout_below="@id/furniture"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/appliances" />
+    <Button
+        android:id="@+id/books"
+        android:layout_below="@id/appliances"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/books" />
+    <Button
+        android:id="@+id/electronics"
+        android:layout_below="@id/books"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/electronics" />
+    <Button
+        android:id="@+id/clothes"
+        android:layout_below="@id/electronics"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/clothes" />
+    <Button
+        android:id="@+id/shoes"
+        android:layout_below="@id/clothes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/shoes" />
+    <Button
+        android:id="@+id/tickets"
+        android:layout_below="@id/shoes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tickets" />
+    <Button
+        android:id="@+id/misc"
+        android:layout_below="@id/tickets"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/misc" />
+</LinearLayout>
