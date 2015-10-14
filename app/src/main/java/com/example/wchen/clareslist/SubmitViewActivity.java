@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 /**
  * Created by wchen on 10/5/15.
@@ -22,16 +23,20 @@ public class SubmitViewActivity extends Activity {
         final ParseWrapper parse = new ParseWrapper();
         final EditText newItem = (EditText) findViewById(R.id.submit_item);
         final EditText newDesc = (EditText) findViewById(R.id.submit_description);
+        // Change edittext to drop down menu later
+        final Spinner newCategory = (Spinner) findViewById(R.id.submit_category);
         final Button submitBtn = (Button) findViewById(R.id.submit_button);
         // Submit button pushes posts to db
+
         submitBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Convert edittext to strings
                 String itemString = newItem.getText().toString();
                 String descString = newDesc.getText().toString();
+                String categoryString = newCategory.getSelectedItem().toString();
                 // Construct new post using item and desc
                 // Add more to this (maybe image?)
-                Posts newPost = new Posts(itemString, descString);
+                Posts newPost = new Posts(itemString, descString, categoryString);
                 // Push post to db
                 parse.pushPost(newPost);
                 finish();

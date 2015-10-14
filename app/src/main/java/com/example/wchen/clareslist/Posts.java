@@ -14,9 +14,10 @@ public class Posts {
     protected String mID;
 
     // Post constructor takes in item and description (add image later)
-    public Posts(String item, String description) {
+    public Posts(String item, String description, String category) {
         mItem = item;
         mDescription = description;
+        mCategory = category;
     }
 
     // Returns the item of post
@@ -47,11 +48,10 @@ public class Posts {
         Posts dbPost;
         ParseWrapper pw = new ParseWrapper();
 
-        pw.maybeCreateUser("mjeong+1@hmc.edu", "password");
+        pw.maybeCreateUser("mjeong+5@hmc.edu", "password");
 
         for (int i=1; i<=numPosts; i++) {
-            dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId);
-            dbPost.mCategory = "Bikes";
+            dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId, "Bikes");
             pw.pushPost(dbPost);
         }
         return pw.getPostsInCategory("Bikes");

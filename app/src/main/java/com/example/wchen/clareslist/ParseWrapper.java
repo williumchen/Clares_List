@@ -2,10 +2,8 @@ package com.example.wchen.clareslist;
 
 import android.util.Log;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -133,12 +131,11 @@ public class ParseWrapper {
         query.setLimit(10);
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description")));
+                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"), parsePost.getString("category")));
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 //        query.findInBackground(new FindCallback<ParseObject>() {
 //            public void done(List<ParseObject> tempPostsList, ParseException e) {
 //                if (e == null) {
@@ -151,7 +148,6 @@ public class ParseWrapper {
 //                }
 //            }
 //        });
-
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }

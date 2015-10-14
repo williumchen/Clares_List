@@ -19,6 +19,15 @@
         android:inputType="textMultiLine"
         android:singleLine="false"/>
 
+    <Spinner
+        android:id="@+id/submit_category"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/category"
+        android:layout_below="@id/submit_description"
+        android:layout_marginTop="10dp"
+        android:spinnerMode="dropdown"/>
+
     <!--<AutoCompleteTextView-->
         <!--android:layout_width=""-->
         <!--android:layout_height="" />-->

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,6 +15,11 @@ import com.parse.Parse;
 
 public class MainActivity extends Activity {
 
+    PostAdapter adapter;
+    RecyclerView recList;
+    ParseWrapper pw;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,12 +27,15 @@ public class MainActivity extends Activity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
+        ParseWrapper pw = new ParseWrapper();
         // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-        PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
+        PostAdapter adapter = new PostAdapter(pw.getPostsInCategory("Bikes"));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
+        // Initialize swipe to refresh layout
+        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
         // Setting up floating action button onclicklistener
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.plus);
@@ -38,14 +47,22 @@ public class MainActivity extends Activity {
                 //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
             }
         });
-//        recList.setHasFixedSize(true);
-//        LinearLayoutManager llm = new LinearLayoutManager(this);
-//        llm.setOrientation(LinearLayoutManager.VERTICAL);
-//        recList.setLayoutManager(llm);
-//
-//        PostAdapter pa = new PostAdapter(createList(30));
-//        recList.setAdapter(pa);
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItems();
+            }
+        });
+    }
+
+    void refreshItems() {
+        pw = new ParseWrapper();
+        adapter = new PostAdapter(pw.getPostsInCategory("Bikes"));
+        recList = (RecyclerView) findViewById(R.id.cardList);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        recList.setAdapter(adapter);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -70,19 +87,3 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-//    private List<Posts> createList(int size) {
-//
-//        List<Posts> result = new ArrayList<Posts>();
-//        for (int i=1; i <= size; i++) {
-//            Posts post = new Posts();
-//            post.item = Posts.ITEM + i;
-//            post.name = posts.NAME_PREFIX + i;
-//            post.description = Posts.DESCRIPTION + i;
-//            post.contact = posts.CONTACT + i + "@test.com";
-//
-//            result.add(post);
-//        }
-//        return result;
-//    }
-//}
