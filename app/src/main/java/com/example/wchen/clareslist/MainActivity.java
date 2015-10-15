@@ -19,19 +19,22 @@ public class MainActivity extends Activity {
     RecyclerView recList;
     ParseWrapper pw;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
         ParseWrapper pw = new ParseWrapper();
+
+        // Get intent from CategoryActivity and determine category
+        Intent categoryIntent = getIntent();
+        String category = categoryIntent.getStringExtra("category");
+
         // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-        PostAdapter adapter = new PostAdapter(pw.getPostsInCategory("Furniture"));
+        PostAdapter adapter = new PostAdapter(pw.getPostsInCategory(category));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
         // Initialize swipe to refresh layout
@@ -59,7 +62,9 @@ public class MainActivity extends Activity {
     // Reload the posts from parse and reload recyclerview
     void refreshItems() {
         pw = new ParseWrapper();
-        adapter = new PostAdapter(pw.getPostsInCategory("Furniture"));
+        Intent categoryIntent = getIntent();
+        String category = categoryIntent.getStringExtra("category");
+        adapter = new PostAdapter(pw.getPostsInCategory(category));
         recList = (RecyclerView) findViewById(R.id.cardList);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         recList.setAdapter(adapter);
@@ -76,16 +81,12 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Get the back button to work
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
