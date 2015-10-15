@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ParseWrapper pw = new ParseWrapper();
+        pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
 
         // Get intent from CategoryActivity and determine category
         Intent categoryIntent = getIntent();

@@ -5,6 +5,7 @@
     tools:context="com.example.wchen.clareslist.SubmitViewActivity">
     <EditText
         android:id="@+id/submit_item"
+        android:text=""
         android:hint="Item Name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -12,6 +13,7 @@
 
     <EditText
         android:id="@+id/submit_description"
+        android:text=""
         android:hint="Description"
         android:layout_below="@id/submit_item"
         android:layout_width="fill_parent"
