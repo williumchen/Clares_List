@@ -11,8 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.parse.Parse;
-
 public class MainActivity extends Activity {
 
     PostAdapter adapter;
@@ -29,7 +27,7 @@ public class MainActivity extends Activity {
 
         // Get intent from CategoryActivity and determine category
         Intent categoryIntent = getIntent();
-        String category = categoryIntent.getStringExtra("category");
+        final String category = categoryIntent.getStringExtra("category");
 
         // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
@@ -46,6 +44,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent submitScreen = new Intent(v.getContext(), SubmitViewActivity.class);
+                submitScreen.putExtra("category",category);
                 v.getContext().startActivity(submitScreen);
                 //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
             }

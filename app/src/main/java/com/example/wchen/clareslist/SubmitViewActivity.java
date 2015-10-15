@@ -19,12 +19,23 @@ public class SubmitViewActivity extends Activity {
         setContentView(R.layout.activity_submit_view);
         // Grab intent on click of floating action button
         Intent intent = getIntent();
+        final String category = intent.getStringExtra("category");
         // Initialize parse db, and grab item / desc from view
         final ParseWrapper parse = new ParseWrapper();
         final EditText newItem = (EditText) findViewById(R.id.submit_item);
         final EditText newDesc = (EditText) findViewById(R.id.submit_description);
         // Change edittext to drop down menu later
         final Spinner newCategory = (Spinner) findViewById(R.id.submit_category);
+
+        if (category.equals("Furniture")) newCategory.setSelection(0);
+        if (category.equals("Appliances")) newCategory.setSelection(1);
+        if (category.equals("Books")) newCategory.setSelection(2);
+        if (category.equals("Electronics")) newCategory.setSelection(3);
+        if (category.equals("Clothes")) newCategory.setSelection(4);
+        if (category.equals("Shoes")) newCategory.setSelection(5);
+        if (category.equals("Tickets")) newCategory.setSelection(6);
+        if (category.equals("Misc")) newCategory.setSelection(7);
+
         final Button submitBtn = (Button) findViewById(R.id.submit_button);
         // Submit button pushes posts to db
 
