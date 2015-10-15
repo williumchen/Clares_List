@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.parse.Parse;
 
-// Class for more detailed view of the post
+// Class for displaying the categories
 
 public class CategoryActivity extends Activity {
     @Override
