@@ -1,5 +1,7 @@
 package com.example.wchen.clareslist;
 
+import android.util.Pair;
+
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -11,56 +13,45 @@ import java.util.List;
  * Created by emilyfirst on 10/14/15.
  */
 public class Search {
-    protected List<String> mText;
+    protected String mText;
+    //Do I need this?
     protected List<Posts> mPosts;
 
 
     public Search(String text)
     {
-        String temp = "";
-        for (int i = 0; i < text.length(); i++)
-        {
-            if (Character.isLetter(text.charAt(i)))
-            {
-                temp += Character.toLowerCase(text.charAt(i));
-            }
-            if (Character.isSpaceChar(text.charAt(i))) {
-                mText.add(temp);
-                temp = "";
-            }
-        }
+        mText = text;
 
     }
 
-    public List<String> getTextList()
+    public String getKeyText()
     {
         return mText;
     }
 
-    public List<Posts> getPostsWithText()
+    public List<Pair<String,String>> getPostInfo()
     {
-        final ArrayList<Posts> postsList = new ArrayList<>();
-        String word;
-        for (int i = 0; i < mText.size(); i++)
-        {
-            word = mText.get(i);
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
-            query.whereEqualTo("item", word);
+        List<Pair<String, String>> pairList= new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
+        query.orderByDescending("createdAt");
+        query.setLimit(50);
 
-            try {
-                for (ParseObject parsePost : query.find()) {
-                    postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description")));
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+        try {
+            for (ParseObject parsePost : query.find()) {
+                pairList.add(Pair.create(parsePost.getString("description"), parsePost.getObjectId()));
             }
-
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-
+        return pairList;
 
     }
 
+    public List<Posts> getPostsWithKey()
+    {
+        return null;
+    }
 
 
 
