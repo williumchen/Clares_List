@@ -60,6 +60,8 @@ public class MainActivity extends Activity {
         });
     }
     // Reload the posts from parse and reload recyclerview
+    // There is definitely a better way to do this
+    //
     void refreshItems() {
         pw = new ParseWrapper();
         Intent categoryIntent = getIntent();
