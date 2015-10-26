@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * Created by wchen on 10/5/15.
@@ -32,8 +33,10 @@ public class SubmitViewActivity extends Activity {
                 // Construct new post using item and desc
                 // Add more to this (maybe image?)
                 Posts newPost = new Posts(itemString, descString);
+                newPost.mCategory = "Bikes";
                 // Push post to db
                 parse.pushPost(newPost);
+                Toast.makeText(getBaseContext(), "Post successfully added", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

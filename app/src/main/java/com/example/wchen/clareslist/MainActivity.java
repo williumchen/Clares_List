@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-        PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
+        PostAdapter adapter = new PostAdapter(Posts.createPostsList(5));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
 
