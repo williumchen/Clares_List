@@ -1,11 +1,10 @@
 package com.example.wchen.clareslist;
 
 import android.util.Log;
+import android.util.Pair;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -155,6 +154,51 @@ public class ParseWrapper {
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
+        return postsList;
+    }
+
+    public List<Pair<String,String>> getPostInfo()
+    {
+        List<Pair<String, String>> pairList= new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
+        query.orderByDescending("createdAt");
+        query.setLimit(50);
+
+        try {
+            for (ParseObject parsePost : query.find()) {
+                pairList.add(Pair.create(parsePost.getString("description"), parsePost.getObjectId()));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return pairList;
+
+    }
+
+    public List<Posts> getPostsWithKey(String phrase)
+    {
+        List<Pair<String,String>> pairList = getPostInfo();
+        final ArrayList<Posts> postsList = new ArrayList<>();
+        for (Pair<String,String> pair : pairList)
+        {
+            if (pair.first.contains(phrase))
+            {
+                //Add that post to the list of posts
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
+                query.getInBackground(pair.second, new GetCallback<ParseObject>() {
+                    public void done(ParseObject object, ParseException e) {
+                        if (e == null) {
+                            // object will be post
+                            postsList.add(new Posts(object.getString("item"), object.getString("description")));
+                        } else {
+                            // something went wrong
+                        }
+                    }
+                });
+            }
+        }
+
         return postsList;
     }
 

@@ -23,7 +23,7 @@
         <activity
             android:name=".PostViewActivity"
             android:label="@string/title_activity_post_view"
-            android:parentActivityName="com.example.wchen.clareslist.MainActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.wchen.clareslist.MainActivity" />
@@ -31,10 +31,15 @@
         <activity
             android:name=".SubmitViewActivity"
             android:label="@string/title_activity_submit_view"
-            android:parentActivityName="com.example.wchen.clareslist.MainActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.wchen.clareslist.MainActivity" />
         </activity>
+        <activity
+            android:name=".SearchResultsViewActivity"
+            android:label="@string/title_activity_search_results_view" >
+        </activity>
     </application>
+
 </manifest>
