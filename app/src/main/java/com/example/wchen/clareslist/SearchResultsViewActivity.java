@@ -1,6 +1,7 @@
 package com.example.wchen.clareslist;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,10 +22,13 @@ public class SearchResultsViewActivity extends Activity {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
 
+        Intent intent = getIntent();
+        String text = intent.getStringExtra("key");
+
         // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-        String text = "meow";
+
         PostAdapter adapter = new PostAdapter(Search.doSearch(text));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));

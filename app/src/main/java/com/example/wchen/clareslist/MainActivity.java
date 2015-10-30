@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.parse.Parse;
 
@@ -36,6 +38,20 @@ public class MainActivity extends Activity {
                 Intent submitScreen = new Intent(v.getContext(), SubmitViewActivity.class);
                 v.getContext().startActivity(submitScreen);
                 //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        final EditText newKey = (EditText) findViewById(R.id.submit_key);
+        final Button searchBtn = (Button) findViewById(R.id.search_button);
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent searchScreen = new Intent(v.getContext(), SearchResultsViewActivity.class);
+                // Convert edittext to strings
+                searchScreen.putExtra("key", newKey.getText().toString());
+                v.getContext().startActivity(searchScreen);
+
+                finish();
             }
         });
 //        recList.setHasFixedSize(true);
