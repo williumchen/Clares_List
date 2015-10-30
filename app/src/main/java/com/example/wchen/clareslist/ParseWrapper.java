@@ -39,7 +39,7 @@ public class ParseWrapper {
         //user.setEmail(email);
 
         // other fields can be set just like with ParseObject
-        // user.put("phone", "650-253-0000");
+        // user.put("phone", "650-253-0000");g
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {

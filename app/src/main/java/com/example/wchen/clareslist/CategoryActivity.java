@@ -1,13 +1,10 @@
 package com.example.wchen.clareslist;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.parse.Parse;
 
@@ -17,29 +14,30 @@ public class CategoryActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_category);
+        setContentView(R.layout.activity_category_rc);
         RecyclerView rvCategory = (RecyclerView) findViewById(R.id.rvCategory);
         // Create adapter passing in the sample user data
-        RecyclerView.ItemDecoration itemDecoration = new
-                DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
-        rvCategory.addItemDecoration(itemDecoration);
         CategoryAdapter adapter = new CategoryAdapter(CategoryAdapter.getCategory());
-        // Attach the adapter to the recyclerview to populate items
+        // Attach the adapter to the RecyclerView to populate items
         rvCategory.setAdapter(adapter);
         // Set layout manager to position the items
         rvCategory.setLayoutManager(new LinearLayoutManager(this));
-
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        rvCategory.addItemDecoration(itemDecoration);
+//        findViewById(R.id.category).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TextView textCategory = (TextView) v;
+//                // Set up intent for post view
+//                Intent categorySelected = new Intent(v.getContext(), MainActivity.class);
+//                categorySelected.putExtra("category", textCategory.getText().toString());
+//                v.getContext().startActivity(categorySelected);
+//            }
+//        });
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
-    }
-
-    public void onClick(View v) {
-        TextView textCategory = (TextView) v;
-        // Set up intent for post view
-        Intent categorySelected = new Intent(v.getContext(), MainActivity.class);
-        categorySelected.putExtra("category", textCategory.getText().toString());
-        v.getContext().startActivity(categorySelected);
     }
 
     @Override
