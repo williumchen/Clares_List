@@ -6,8 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
-import com.parse.Parse;
-
 // Class for displaying the categories
 
 public class CategoryActivity extends Activity {
@@ -34,10 +32,7 @@ public class CategoryActivity extends Activity {
 //                categorySelected.putExtra("category", textCategory.getText().toString());
 //                v.getContext().startActivity(categorySelected);
 //            }
-//        });
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
+//        })
     }
 
     @Override
