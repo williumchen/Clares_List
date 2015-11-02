@@ -8,28 +8,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.parse.Parse;
-
 public class SearchResultsViewActivity extends Activity {
+
+    PostAdapter adapter;
+    RecyclerView recList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results_view);
 
-        //do I need to initialized local data store?
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
-
         Intent intent = getIntent();
         String text = intent.getStringExtra("key");
 
         // Initialize the recycler view
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
 
-        PostAdapter adapter = new PostAdapter(Search.doSearch(text));
+        adapter = new PostAdapter(Search.doSearch(text));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
     }

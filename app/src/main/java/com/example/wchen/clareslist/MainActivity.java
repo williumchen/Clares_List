@@ -16,17 +16,25 @@ import com.parse.Parse;
 
 public class MainActivity extends Activity {
 
+    PostAdapter adapter;
+    RecyclerView recList;
+    ParseWrapper pw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
+
         Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
+
+        // Enable Local Datastore.
+        pw = new ParseWrapper();
+        pw.maybeCreateUser("mjeong+11@hmc.edu", "password");
+
         // Initialize the recycler view
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-        PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
+        adapter = new PostAdapter(Posts.createPostsList(20));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
 
