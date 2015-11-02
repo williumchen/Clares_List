@@ -1,9 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <!-- Remove the action bar with NoActionBar. Include AppCompat for customizing -->
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
-
 </resources>

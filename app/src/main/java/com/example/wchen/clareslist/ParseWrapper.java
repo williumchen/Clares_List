@@ -40,7 +40,7 @@ public class ParseWrapper {
         //user.setEmail(email);
 
         // other fields can be set just like with ParseObject
-        // user.put("phone", "650-253-0000");
+        // user.put("phone", "650-253-0000");g
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
@@ -132,12 +132,11 @@ public class ParseWrapper {
         query.setLimit(10);
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description")));
+                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"), parsePost.getString("category")));
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 //        query.findInBackground(new FindCallback<ParseObject>() {
 //            public void done(List<ParseObject> tempPostsList, ParseException e) {
 //                if (e == null) {
@@ -150,7 +149,6 @@ public class ParseWrapper {
 //                }
 //            }
 //        });
-
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }

@@ -5,6 +5,7 @@
     tools:context="com.example.wchen.clareslist.SubmitViewActivity">
     <EditText
         android:id="@+id/submit_item"
+        android:text=""
         android:hint="Item Name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -12,12 +13,22 @@
 
     <EditText
         android:id="@+id/submit_description"
+        android:text=""
         android:hint="Description"
         android:layout_below="@id/submit_item"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:singleLine="false"/>
+
+    <Spinner
+        android:id="@+id/submit_category"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/category"
+        android:layout_below="@id/submit_description"
+        android:layout_marginTop="10dp"
+        android:spinnerMode="dropdown"/>
 
     <!--<AutoCompleteTextView-->
         <!--android:layout_width=""-->
@@ -28,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/submit_description"
+        android:layout_below="@id/submit_category"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:text="Submit"
