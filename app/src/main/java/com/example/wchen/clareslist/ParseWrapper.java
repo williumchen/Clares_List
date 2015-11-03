@@ -188,7 +188,7 @@ public class ParseWrapper {
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             // object will be post
-                            postsList.add(new Posts(object.getString("item"), object.getString("description"), object.getString("category")));
+                            postsList.add(new Posts(object.getString("item"), object.getString("description")));
                         } else {
                             // something went wrong
                         }
