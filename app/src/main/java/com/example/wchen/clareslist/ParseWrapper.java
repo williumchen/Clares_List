@@ -157,16 +157,19 @@ public class ParseWrapper {
 
     public List<Pair<String,String>> getPostInfo()
     {
-        List<Pair<String, String>> pairList= new ArrayList<>();
+        final ArrayList<Pair<String,String>> pairList= new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
+        query.whereEqualTo("category", "Clothes");
         query.orderByDescending("createdAt");
         query.setLimit(50);
-
         try {
             for (ParseObject parsePost : query.find()) {
-                pairList.add(Pair.create(parsePost.getString("description"), parsePost.getObjectId()));
+                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
+                //new Pair<>(parsePost.getString("description"),
+                pairList.add(new Pair<>(parsePost.getString("description"),parsePost.getObjectId()));
             }
         } catch (ParseException e) {
+            Log.d("debugging search", "actually here!");
             e.printStackTrace();
         }
 
@@ -177,7 +180,7 @@ public class ParseWrapper {
     public List<Posts> getPostsWithKey(String phrase)
     {
         List<Pair<String,String>> pairList = getPostInfo();
-        final ArrayList<Posts> postsList = new ArrayList<>();
+        final List<Posts> postsList = new ArrayList<>();
         if (pairList != null)
         {
             Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
@@ -188,7 +191,7 @@ public class ParseWrapper {
             Log.d("debugging search", "first:" + pair.first);
             if (pair.first.contains(phrase))
             {
-                Log.d("debugging search", "found object with descrip" + pair.first);
+                //Log.d("debugging search", "found object with descrip" + pair.first);
                 //Add that post to the list of posts
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
                 query.getInBackground(pair.second, new GetCallback<ParseObject>() {
