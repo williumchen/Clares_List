@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,6 +21,7 @@ public class SearchResultsViewActivity extends Activity {
 
         Intent intent = getIntent();
         String text = intent.getStringExtra("key");
+        Log.d("debugging search", text);
 
         // Initialize the recycler view
         recList = (RecyclerView) findViewById(R.id.cardList);

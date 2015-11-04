@@ -178,17 +178,24 @@ public class ParseWrapper {
     {
         List<Pair<String,String>> pairList = getPostInfo();
         final ArrayList<Posts> postsList = new ArrayList<>();
+        if (pairList != null)
+        {
+            Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
+
+        }
         for (Pair<String,String> pair : pairList)
         {
+            Log.d("debugging search", "first:" + pair.first);
             if (pair.first.contains(phrase))
             {
+                Log.d("debugging search", "found object with descrip" + pair.first);
                 //Add that post to the list of posts
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
                 query.getInBackground(pair.second, new GetCallback<ParseObject>() {
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             // object will be post
-                            postsList.add(new Posts(object.getString("item"), object.getString("description")));
+                            postsList.add(new Posts(object.getString("item"), object.getString("description"), object.getString("category")));
                         } else {
                             // something went wrong
                         }

@@ -1,5 +1,7 @@
 package com.example.wchen.clareslist;
 
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,11 @@ public class Search {
         Search dSearch = new Search(text);
         ParseWrapper wrap = new ParseWrapper();
         List<Posts> result  = wrap.getPostsWithKey(dSearch.mText);
+        if (result != null)
+        {
+            Log.d("debugging search", Integer.toString(result.size()));
+
+        }
         return result;
     }
 
