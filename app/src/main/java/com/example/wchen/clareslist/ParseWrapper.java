@@ -1,7 +1,6 @@
 package com.example.wchen.clareslist;
 
 import android.util.Log;
-import android.util.Pair;
 
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
@@ -155,50 +154,45 @@ public class ParseWrapper {
         return postsList;
     }
 
-    public List<Pair<String,String>> getPostInfo()
-    {
-        final ArrayList<Pair<String,String>> pairList = new ArrayList<>();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
-        query.orderByDescending("createdAt");
-        query.setLimit(10);
-        List<ParseObject> myPosts = new ArrayList<>();
-        try {
-            Log.d("debugging search", "query count: " + Integer.toString(query.count()));
-             myPosts = query.find();
-        }
-        catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Log.d("debugging search", "listLength: " + Integer.toString(myPosts.size()));
+//    public List<Pair<String,String>> getPostInfo()
+//    {
+//        final ArrayList<Pair<String,String>> pairList = new ArrayList<>();
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
+//        query.orderByDescending("createdAt");
+//        query.setLimit(10);
+//
 //        try {
-            for (ParseObject parsePost : myPosts) {
-                Log.d("debugging search", "GOT A THING");
-                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
-                //new Pair<>(parsePost.getString("description"),
-                pairList.add(Pair.create(parsePost.getString("description"),parsePost.getObjectId()));
-            }
-//        } catch  {
-//            Log.d("debugging search", "actually here!");
+//            for (ParseObject parsePost : query.find()) {
+//                Log.d("debugging search", "GOT A THING");
+//                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
+//                //new Pair<>(parsePost.getString("description"),
+//                pairList.add(Pair.create(parsePost.getString("description"),parsePost.getObjectId()));
+//            }
+//        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
+//
+//        return pairList;
+//    }
 
-        return pairList;
-
-    }
-
-    public List<Posts> getPostsWithKey(String phrase, String category)
-    {
-        //List<Pair<String,String>> pairList = getPostInfo();
-        final List<Posts> other = getPostsInCategory(category);
+    public List<Posts> getPostsWithKey(String key, String category) {
+        final List<Posts> completePosts = getPostsInCategory(category);
         final List<Posts> postsList = new ArrayList<>();
 
         Log.d("debugging search", "initial: " + Integer.toString(postsList.size()));
-        for (Posts post : other) {
+
+        for (Posts post : completePosts) {
             Log.d("debugging search", "desc: " + post.mDescription);
-            if (post.mDescription.contains(phrase)) {
+            String lowDescription = post.mDescription.toLowerCase();
+            String lowItem = post.mItem.toLowerCase();
+            if (lowDescription.contains(key) || lowItem.contains(key)) {
                 postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory));
             }
         }
+
+        return postsList;
+    }
+
 //        if (pairList != null)
 //        {
 //            Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
@@ -225,8 +219,7 @@ public class ParseWrapper {
 //            }
 //        }
 //
-       return postsList;
-    }
+
 
     public String getUserID() { return userID; }
 

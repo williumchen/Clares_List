@@ -16,7 +16,8 @@ public class Search {
 
     public Search(String text, String category)
     {
-        mText = text;
+        String lower = text.toLowerCase();
+        mText = lower;
         mCategory = category;
 
     }
