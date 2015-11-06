@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
@@ -23,6 +25,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ParseWrapper pw = new ParseWrapper();
         pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
 
@@ -30,10 +33,13 @@ public class MainActivity extends Activity {
         Intent categoryIntent = getIntent();
         final String category = categoryIntent.getStringExtra("category");
 
+
         // Initialize the recycler view
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
+
         PostAdapter adapter = new PostAdapter(pw.getPostsInCategory(category));
+
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
         // Initialize swipe to refresh layout
@@ -50,6 +56,28 @@ public class MainActivity extends Activity {
                 //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        final EditText newKey = (EditText) findViewById(R.id.submit_key);
+        final Button searchBtn = (Button) findViewById(R.id.search_button);
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent searchScreen = new Intent(v.getContext(), SearchResultsViewActivity.class);
+                // Convert edittext to strings
+                searchScreen.putExtra("key", newKey.getText().toString());
+                searchScreen.putExtra("category", category);
+                v.getContext().startActivity(searchScreen);
+
+                finish();
+            }
+        });
+//        recList.setHasFixedSize(true);
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        recList.setLayoutManager(llm);
+//
+//        PostAdapter pa = new PostAdapter(createList(30));
+//        recList.setAdapter(pa);
 
         // Swipe to refresh widget
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
