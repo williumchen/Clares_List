@@ -21,13 +21,14 @@ public class SearchResultsViewActivity extends Activity {
 
         Intent intent = getIntent();
         String text = intent.getStringExtra("key");
+        String category = intent .getStringExtra("category");
         Log.d("debugging search", text);
 
         // Initialize the recycler view
         recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
 
-        adapter = new PostAdapter(Search.doSearch(text));
+        adapter = new PostAdapter(Search.doSearch(text,category));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
     }

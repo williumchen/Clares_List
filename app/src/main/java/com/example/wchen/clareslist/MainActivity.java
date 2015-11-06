@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
                 Intent searchScreen = new Intent(v.getContext(), SearchResultsViewActivity.class);
                 // Convert edittext to strings
                 searchScreen.putExtra("key", newKey.getText().toString());
+                searchScreen.putExtra("category", category);
                 v.getContext().startActivity(searchScreen);
 
                 finish();

@@ -9,13 +9,15 @@ import java.util.List;
  */
 public class Search {
     protected String mText;
+    protected String mCategory;
     //Do I need this?
     protected List<Posts> mPosts;
 
 
-    public Search(String text)
+    public Search(String text, String category)
     {
         mText = text;
+        mCategory = category;
 
     }
 
@@ -24,11 +26,12 @@ public class Search {
         return mText;
     }
 
-    public static List<Posts> doSearch(String text)
+    public static List<Posts> doSearch(String text, String category)
     {
-        Search dSearch = new Search(text);
+        Search dSearch = new Search(text, category);
         ParseWrapper wrap = new ParseWrapper();
-        List<Posts> result  = wrap.getPostsWithKey(dSearch.mText);
+        wrap.maybeGetCurrentUser();
+        List<Posts> result  = wrap.getPostsWithKey(dSearch.mText, dSearch.mCategory);
         if (result != null)
         {
             Log.d("debugging search", Integer.toString(result.size()));

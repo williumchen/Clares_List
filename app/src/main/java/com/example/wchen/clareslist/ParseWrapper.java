@@ -157,57 +157,75 @@ public class ParseWrapper {
 
     public List<Pair<String,String>> getPostInfo()
     {
-        final ArrayList<Pair<String,String>> pairList= new ArrayList<>();
+        final ArrayList<Pair<String,String>> pairList = new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
-        query.whereEqualTo("category", "Clothes");
         query.orderByDescending("createdAt");
-        query.setLimit(50);
+        query.setLimit(10);
+        List<ParseObject> myPosts = new ArrayList<>();
         try {
-            for (ParseObject parsePost : query.find()) {
-                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
-                //new Pair<>(parsePost.getString("description"),
-                pairList.add(new Pair<>(parsePost.getString("description"),parsePost.getObjectId()));
-            }
-        } catch (ParseException e) {
-            Log.d("debugging search", "actually here!");
+            Log.d("debugging search", "query count: " + Integer.toString(query.count()));
+             myPosts = query.find();
+        }
+        catch (ParseException e) {
             e.printStackTrace();
         }
+        Log.d("debugging search", "listLength: " + Integer.toString(myPosts.size()));
+//        try {
+            for (ParseObject parsePost : myPosts) {
+                Log.d("debugging search", "GOT A THING");
+                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
+                //new Pair<>(parsePost.getString("description"),
+                pairList.add(Pair.create(parsePost.getString("description"),parsePost.getObjectId()));
+            }
+//        } catch  {
+//            Log.d("debugging search", "actually here!");
+//            e.printStackTrace();
+//        }
 
         return pairList;
 
     }
 
-    public List<Posts> getPostsWithKey(String phrase)
+    public List<Posts> getPostsWithKey(String phrase, String category)
     {
-        List<Pair<String,String>> pairList = getPostInfo();
+        //List<Pair<String,String>> pairList = getPostInfo();
+        final List<Posts> other = getPostsInCategory(category);
         final List<Posts> postsList = new ArrayList<>();
-        if (pairList != null)
-        {
-            Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
 
-        }
-        for (Pair<String,String> pair : pairList)
-        {
-            Log.d("debugging search", "first:" + pair.first);
-            if (pair.first.contains(phrase))
-            {
-                //Log.d("debugging search", "found object with descrip" + pair.first);
-                //Add that post to the list of posts
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
-                query.getInBackground(pair.second, new GetCallback<ParseObject>() {
-                    public void done(ParseObject object, ParseException e) {
-                        if (e == null) {
-                            // object will be post
-                            postsList.add(new Posts(object.getString("item"), object.getString("description"), object.getString("category")));
-                        } else {
-                            // something went wrong
-                        }
-                    }
-                });
+        Log.d("debugging search", "initial: " + Integer.toString(postsList.size()));
+        for (Posts post : other) {
+            Log.d("debugging search", "desc: " + post.mDescription);
+            if (post.mDescription.contains(phrase)) {
+                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory));
             }
         }
-
-        return postsList;
+//        if (pairList != null)
+//        {
+//            Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
+//
+//        }
+//        for (Pair<String,String> pair : pairList)
+//        {
+//            Log.d("debugging search", "first:" + pair.first);
+//            if (pair.first.contains(phrase))
+//            {
+//                //Log.d("debugging search", "found object with descrip" + pair.first);
+//                //Add that post to the list of posts
+//                ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
+//                query.getInBackground(pair.second, new GetCallback<ParseObject>() {
+//                    public void done(ParseObject object, ParseException e) {
+//                        if (e == null) {
+//                            // object will be post
+//                            postsList.add(new Posts(object.getString("item"), object.getString("description"), object.getString("category")));
+//                        } else {
+//                            // something went wrong
+//                        }
+//                    }
+//                });
+//            }
+//        }
+//
+       return postsList;
     }
 
     public String getUserID() { return userID; }
