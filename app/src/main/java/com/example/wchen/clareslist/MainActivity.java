@@ -4,30 +4,45 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.parse.Parse;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
+
+    PostAdapter adapter;
+    RecyclerView recList;
+    ParseWrapper pw;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "vH9SzZSDGnse8Sub1eF4ZF8L3J30YGHxkwNYBiKd", "u6WXDTEzRs2pLXnhas3Oi8BSqhpnhZMJuCT7bgY1");
+
+        ParseWrapper pw = new ParseWrapper();
+        pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
+
+        // Get intent from CategoryActivity and determine category
+        Intent categoryIntent = getIntent();
+        final String category = categoryIntent.getStringExtra("category");
 
         // Initialize the recycler view
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-        PostAdapter adapter = new PostAdapter(Posts.createPostsList(20));
+
+        PostAdapter adapter = new PostAdapter(pw.getPostsInCategory(category));
+
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
+        // Initialize swipe to refresh layout
+        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
         // Setting up floating action button onclicklistener
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.plus);
@@ -35,8 +50,24 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent submitScreen = new Intent(v.getContext(), SubmitViewActivity.class);
+                submitScreen.putExtra("category",category);
                 v.getContext().startActivity(submitScreen);
                 //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        final EditText newKey = (EditText) findViewById(R.id.submit_key);
+        final Button searchBtn = (Button) findViewById(R.id.search_button);
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent searchScreen = new Intent(v.getContext(), SearchResultsViewActivity.class);
+                // Convert edittext to strings
+                searchScreen.putExtra("key", newKey.getText().toString());
+                searchScreen.putExtra("category", category);
+                v.getContext().startActivity(searchScreen);
+
+                finish();
             }
         });
 //        recList.setHasFixedSize(true);
@@ -46,6 +77,28 @@ public class MainActivity extends Activity {
 //
 //        PostAdapter pa = new PostAdapter(createList(30));
 //        recList.setAdapter(pa);
+
+        // Swipe to refresh widget
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItems();
+            }
+        });
+    }
+    // Reload the posts from parse and reload recyclerview
+    // There is definitely a better way to do this
+    //
+    void refreshItems() {
+        pw = new ParseWrapper();
+        Intent categoryIntent = getIntent();
+        String category = categoryIntent.getStringExtra("category");
+        adapter = new PostAdapter(pw.getPostsInCategory(category));
+        recList = (RecyclerView) findViewById(R.id.cardList);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        recList.setAdapter(adapter);
+        recList.setLayoutManager(new LinearLayoutManager(this));
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -57,32 +110,12 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Get the back button to work
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
-
-//    private List<Posts> createList(int size) {
-//
-//        List<Posts> result = new ArrayList<Posts>();
-//        for (int i=1; i <= size; i++) {
-//            Posts post = new Posts();
-//            post.item = Posts.ITEM + i;
-//            post.name = posts.NAME_PREFIX + i;
-//            post.description = Posts.DESCRIPTION + i;
-//            post.contact = posts.CONTACT + i + "@test.com";
-//
-//            result.add(post);
-//        }
-//        return result;
-//    }
-//}

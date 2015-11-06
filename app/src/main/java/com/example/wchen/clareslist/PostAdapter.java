@@ -13,7 +13,7 @@ import java.util.List;
 // Extends recycler view adapter
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    // ViewHolder implements onclick listener for each card
+    // ViewHolder implements onclick listener for each row
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView nameTextView;
         protected TextView descriptionTextView;
@@ -23,7 +23,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         // Constructor takes in context and the itemView
         public ViewHolder(Context context, View itemView) {
             super(itemView);
-
             // Fetch the item and description view objects in the recycler view
             nameTextView = (TextView) itemView.findViewById(R.id.item);
             descriptionTextView = (TextView) itemView.findViewById(R.id.description);
