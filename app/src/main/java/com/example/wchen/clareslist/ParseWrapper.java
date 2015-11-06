@@ -2,12 +2,14 @@ package com.example.wchen.clareslist;
 
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -67,6 +69,44 @@ public class ParseWrapper {
                 }
             }
         });
+    }
+
+    public void subscribeUser(String category, boolean add) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseObject myCategory = new ParseObject("Categories");
+        myCategory.put("category", category);
+        ParseRelation relation = currentUser.getRelation("categories");
+        final boolean[] subscribe = {checkSubscription(category)};
+
+        if (currentUser != null) {
+            if (add == true && subscribe[0] == false) {
+                relation.add(myCategory);
+                currentUser.saveInBackground();
+            } else if (add == false && subscribe[0] == true) {
+                relation.remove(myCategory);
+                currentUser.saveInBackground();
+            }
+        }
+    }
+
+    public Boolean checkSubscription(String category) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseRelation relation = currentUser.getRelation("categories");
+        ParseObject myCategory = new ParseObject("Categories");
+        myCategory.put("category", category);
+        relation.add(myCategory);
+        final boolean[] subscribe = {false};
+        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                if (e == null) {
+                    Log.d("debugging", "test");
+                    subscribe[0] = true;
+                } else {
+                    // no subscriptions
+                }
+            }
+        });
+        return subscribe[0];
     }
 
     public Boolean checkEmailVerification(String email) {

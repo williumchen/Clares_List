@@ -69,11 +69,32 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        String category = mCategory.get(position);
+        final ParseWrapper parse = new ParseWrapper();
+        final String category = mCategory.get(position);
         TextView itemView = viewHolder.categoryTextView;
         itemView.setText(category);
-        Button button = viewHolder.subButton;
-        button.setText("Subscribe");
+        final Button button = viewHolder.subButton;
+        System.out.println(category);
+        System.out.println(parse.checkSubscription(category));
+        if (parse.checkSubscription(category)) {
+            button.setText("Unsubscribe");
+            button.setEnabled(false);
+        }
+        else {
+            button.setText("Subscribe");
+            button.setEnabled(true);
+        }
+//        button.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                System.out.println("TEST");
+//                String sub = button.getText().toString();
+//                if (sub == "Subscribe") {
+//                    parse.subscribeUser(category, true);
+//                } else {
+//                    parse.subscribeUser(category, false);
+//                }
+//            }
+//        });
     }
 
     @Override
