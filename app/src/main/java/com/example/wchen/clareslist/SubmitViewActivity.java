@@ -2,17 +2,28 @@ package com.example.wchen.clareslist;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * Created by wchen on 10/5/15.
  */
 public class SubmitViewActivity extends Activity {
+
+    ResizableImageView postImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +47,20 @@ public class SubmitViewActivity extends Activity {
         if (category.equals("Tickets")) newCategory.setSelection(6);
         if (category.equals("Misc")) newCategory.setSelection(7);
 
+
+        final Button uploadBtn = (Button) findViewById(R.id.upload_button);
+
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Post Image"), 1);
+            }
+        });
+
+
+
         final Button submitBtn = (Button) findViewById(R.id.submit_button);
         // Submit button pushes posts to db
 
@@ -45,6 +70,7 @@ public class SubmitViewActivity extends Activity {
                 String itemString = newItem.getText().toString();
                 String descString = newDesc.getText().toString();
                 String categoryString = newCategory.getSelectedItem().toString();
+                //String imageString =
 
                 // Construct new post using item and desc
                 // Add more to this (maybe image?)
@@ -54,6 +80,38 @@ public class SubmitViewActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    public void onActivityResult(int reqCode, int resCode, Intent data)
+    {
+        ParseWrapper pw = new ParseWrapper();
+        if (resCode == RESULT_OK)
+        {
+            if (reqCode == 1)
+            {
+                // the address of the image
+                Uri imageUri = data.getData();
+
+                InputStream inputStream;
+
+                try {
+                    inputStream = getContentResolver().openInputStream(imageUri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    // Convert image to byte
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    // Compress image to lower quality scale 1 - 100
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] image = stream.toByteArray();
+
+                    pw.imageUpload(image);
+
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
     @Override

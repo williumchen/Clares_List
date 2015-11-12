@@ -6,6 +6,7 @@ import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -191,6 +192,24 @@ public class ParseWrapper {
         }
 
         return postsList;
+    }
+
+    public void imageUpload(byte[] image) {
+        // Create the ParseFile
+        ParseFile file = new ParseFile("photo.png", image);
+        // Upload the image into Parse Cloud
+        file.saveInBackground();
+        // Create a New Class called "ImageUpload" in Parse
+        ParseObject imgupload = new ParseObject("ImageUpload");
+
+        // Create a column named "ImageName" and set the string
+        imgupload.put("ImageName", "Photo");
+
+        // Create a column named "ImageFile" and insert the image
+        imgupload.put("ImageFile", file);
+
+        // Create the class and the columns
+        imgupload.saveInBackground();
     }
 
 //        if (pairList != null)
