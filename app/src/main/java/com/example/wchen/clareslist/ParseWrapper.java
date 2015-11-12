@@ -20,14 +20,17 @@ import java.util.List;
  * Created by kevin on 10/1/15.
  */
 public class ParseWrapper {
-    protected String userID;
+    protected static String userID;
+    protected static ParseUser currentUser;
 
     public ParseWrapper() {
-        userID = null;
+        currentUser = ParseUser.getCurrentUser();
+        userID = currentUser.getObjectId();
     }
 
-    public void maybeGetCurrentUser() {
-        userID = ParseUser.getCurrentUser().getObjectId();
+    public void setCurrentUser() {
+        currentUser = ParseUser.getCurrentUser();
+        userID = currentUser.getObjectId();
     }
 
     public void maybeCreateUser(String email, String password) {
@@ -41,7 +44,7 @@ public class ParseWrapper {
         //user.setEmail(email);
 
         // other fields can be set just like with ParseObject
-        // user.put("phone", "650-253-0000");g
+        // user.put("phone", "650-253-0000");
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
@@ -49,7 +52,8 @@ public class ParseWrapper {
                     // Hooray! Let them use the app now.
 
                     // retrieve the object ID
-                    userID = ParseUser.getCurrentUser().getObjectId();
+                    currentUser = ParseUser.getCurrentUser();
+                    userID = currentUser.getObjectId();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
@@ -71,42 +75,96 @@ public class ParseWrapper {
         });
     }
 
-    public void subscribeUser(String category, boolean add) {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseObject myCategory = new ParseObject("Categories");
-        myCategory.put("category", category);
-        ParseRelation relation = currentUser.getRelation("categories");
-        final boolean[] subscribe = {checkSubscription(category)};
+    public ParseObject getCategory(String category) {
+        ParseQuery<ParseObject> categoryQuery = ParseQuery.getQuery("Category");
+        categoryQuery.whereEqualTo("category", category);
+        try {
+            return categoryQuery.getFirst();
+        }
+        catch (ParseException e) {
+            // some error
+        }
 
-        if (currentUser != null) {
-            if (add == true && subscribe[0] == false) {
+        return new ParseObject("Category");
+
+    }
+
+    public void subscribeUser(String category, boolean add) {
+        ParseObject myCategory = getCategory("category");
+        myCategory.put("category", category);
+        ParseRelation<ParseObject> relation = currentUser.getRelation("categories");
+        //final boolean[] subscribe = {checkSubscription(category)};
+
+        ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
+
+        subscriptionsQuery.whereEqualTo("category", category);
+        List<ParseObject> subscriptions;
+        try {
+            subscriptions = subscriptionsQuery.find();
+            boolean subscribed = subscriptions.size() != 0;
+            if(add && !subscribed) {
+                Log.d("debugging", "attempted to add");
                 relation.add(myCategory);
-                currentUser.saveInBackground();
-            } else if (add == false && subscribe[0] == true) {
+                Log.d("debugging", "added..?");
+            }
+            else if (!add && subscribed) {
+                Log.d("debugging", "attempted to remove");
                 relation.remove(myCategory);
-                currentUser.saveInBackground();
             }
         }
+        catch (ParseException e) {
+            // some error!
+        }
+
+        currentUser.saveInBackground();
     }
 
     public Boolean checkSubscription(String category) {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseRelation relation = currentUser.getRelation("categories");
-        ParseObject myCategory = new ParseObject("Categories");
+        ParseObject myCategory = getCategory(category);
         myCategory.put("category", category);
-        relation.add(myCategory);
-        final boolean[] subscribe = {false};
-        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> results, ParseException e) {
-                if (e == null) {
-                    Log.d("debugging", "test");
-                    subscribe[0] = true;
-                } else {
-                    // no subscriptions
-                }
-            }
-        });
-        return subscribe[0];
+        ParseRelation<ParseObject> relation = currentUser.getRelation("categories");
+        //final boolean[] subscribe = {checkSubscription(category)};
+
+        ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
+
+        subscriptionsQuery.whereEqualTo("category", category);
+        List<ParseObject> subscriptions = new ArrayList<ParseObject>();
+        try {
+            subscriptions = subscriptionsQuery.find();
+            //Log.d("debugging", "subscription length: " + subscriptions.toString());
+        }
+        catch (ParseException e) {
+            // some error
+        }
+
+        return subscriptions.size() != 0;
+
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        ParseRelation relation = currentUser.getRelation("categories");
+//        ParseObject myCategory = new ParseObject("Category");
+//        myCategory.put("category", category);
+//        relation.add(myCategory);
+//        try {
+//            relation.getQuery().find();
+//        }
+//        catch (ParseException e) {
+//             // do something with this exception
+//        }
+//        return true;
+
+
+//        final boolean[] subscribe = {false};
+//        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> results, ParseException e) {
+//                if (e == null) {
+//                    Log.d("debugging", "test");
+//                    subscribe[0] = true;
+//                } else {
+//                    // no subscriptions
+//                }
+//            }
+//        });
+        //return subscribe[0];
     }
 
     public Boolean checkEmailVerification(String email) {
@@ -137,7 +195,7 @@ public class ParseWrapper {
 //        parsePost.put("picture", picture);
 
 //        Security settings for post objects, public read/private write
-        ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
+        ParseACL postsACL = new ParseACL(currentUser);
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
 

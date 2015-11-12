@@ -3,6 +3,7 @@ package com.example.wchen.clareslist;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,17 +85,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             button.setText("Subscribe");
             button.setEnabled(true);
         }
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                System.out.println("TEST");
-//                String sub = button.getText().toString();
-//                if (sub == "Subscribe") {
-//                    parse.subscribeUser(category, true);
-//                } else {
-//                    parse.subscribeUser(category, false);
-//                }
-//            }
-//        });
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("TEST");
+                String sub = button.getText().toString();
+                if (sub == "Subscribe") {
+                    parse.subscribeUser(category, true);
+                    Log.d("DEBUGGGINGG", category);
+                } else {
+                    parse.subscribeUser(category, false);
+                }
+            }
+        });
     }
 
     @Override
