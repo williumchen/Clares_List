@@ -187,7 +187,7 @@ public class ParseWrapper {
             String lowDescription = post.mDescription.toLowerCase();
             String lowItem = post.mItem.toLowerCase();
             if (lowDescription.contains(key) || lowItem.contains(key)) {
-                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory));
+                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory, post.mImage));
             }
         }
 
@@ -200,16 +200,16 @@ public class ParseWrapper {
         // Upload the image into Parse Cloud
         file.saveInBackground();
         // Create a New Class called "ImageUpload" in Parse
-        ParseObject imgupload = new ParseObject("ImageUpload");
+        ParseObject imgUpload = new ParseObject("ImageUpload");
 
         // Create a column named "ImageName" and set the string
-        imgupload.put("ImageName", "Photo");
+        imgUpload.put("ImageName", "Photo");
 
         // Create a column named "ImageFile" and insert the image
-        imgupload.put("ImageFile", file);
+        imgUpload.put("ImageFile", file);
 
         // Create the class and the columns
-        imgupload.saveInBackground();
+        imgUpload.saveInBackground();
     }
 
 //        if (pairList != null)

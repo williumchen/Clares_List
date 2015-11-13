@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -49,6 +51,7 @@ public class SubmitViewActivity extends Activity {
 
 
         final Button uploadBtn = (Button) findViewById(R.id.upload_button);
+        final Text newImage = (Text) findViewById(R.id.image_name);
 
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -70,11 +73,12 @@ public class SubmitViewActivity extends Activity {
                 String itemString = newItem.getText().toString();
                 String descString = newDesc.getText().toString();
                 String categoryString = newCategory.getSelectedItem().toString();
+                String imageString = newImage.getWholeText().toString();
                 //String imageString =
 
                 // Construct new post using item and desc
                 // Add more to this (maybe image?)
-                Posts newPost = new Posts(itemString, descString, categoryString);
+                Posts newPost = new Posts(itemString, descString, categoryString, imageString);
                 // Push post to db
                 parse.pushPost(newPost);
                 finish();
