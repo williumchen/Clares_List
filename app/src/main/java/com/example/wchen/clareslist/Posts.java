@@ -1,5 +1,7 @@
 package com.example.wchen.clareslist;
 
+import com.parse.ParseFile;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +14,11 @@ public class Posts {
     protected String mDescription;
     protected String mCategory;
     protected String mID;
-    protected String mImage;
+    protected ParseFile mImage;
     protected String mContact;
 
     // Post constructor takes in item and description (add image later)
-    public Posts(String item, String description, String category, String image, String contact) {
+    public Posts(String item, String description, String category, ParseFile image, String contact) {
         mItem = item;
         mDescription = description;
         mCategory = category;
@@ -43,7 +45,7 @@ public class Posts {
 
     public String getContact() { return mContact; }
 
-    public String getImage() { return mImage; }
+    public ParseFile getImage() { return mImage; }
 
     public void setmID(String myID) {
         mID = myID;
@@ -60,8 +62,8 @@ public class Posts {
         pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
 
         for (int i=1; i<=numPosts; i++) {
-            dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId, "Bikes", "someImage.png", "My number");
-            pw.pushPost(dbPost);
+            //dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId, "Bikes", "someImage.png", "My number");
+            //pw.pushPost(dbPost);
         }
         return pw.getPostsInCategory("Bikes");
     }

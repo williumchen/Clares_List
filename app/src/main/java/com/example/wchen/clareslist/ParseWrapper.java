@@ -92,6 +92,8 @@ public class ParseWrapper {
         parsePost.put("item", post.mItem);
         parsePost.put("description", post.mDescription);
         parsePost.put("category", post.mCategory);
+        parsePost.put("image", post.mImage);
+        parsePost.put("contact", post.mContact);
 
 //        For future post images
 //        ParseFile picture = new ParseFile("image.png", post.picture);
@@ -133,7 +135,7 @@ public class ParseWrapper {
         try {
             for (ParseObject parsePost : query.find()) {
                 postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
-                        parsePost.getString("category"), parsePost.getString("image"), parsePost.getString("contact")));
+                        parsePost.getString("category"), parsePost.getParseFile("image"), parsePost.getString("contact")));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -195,22 +197,25 @@ public class ParseWrapper {
         return postsList;
     }
 
-    public void imageUpload(byte[] image) {
+    public ParseFile imageUpload(byte[] image) {
+
         // Create the ParseFile
         ParseFile file = new ParseFile("photo.png", image);
         // Upload the image into Parse Cloud
         file.saveInBackground();
-        // Create a New Class called "ImageUpload" in Parse
-        ParseObject imgUpload = new ParseObject("ImageUpload");
+        return file;
 
-        // Create a column named "ImageName" and set the string
-        imgUpload.put("ImageName", "Photo");
-
-        // Create a column named "ImageFile" and insert the image
-        imgUpload.put("ImageFile", file);
-
-        // Create the class and the columns
-        imgUpload.saveInBackground();
+//        // Create a New Class called "ImageUpload" in Parse
+//        ParseObject imgUpload = new ParseObject("ImageUpload");
+//
+//        // Create a column named "ImageName" and set the string
+//        imgUpload.put("ImageName", "Photo");
+//
+//        // Create a column named "ImageFile" and insert the image
+//        imgUpload.put("ImageFile", file);
+//
+//        // Create the class and the columns
+//        imgUpload.saveInBackground();
     }
 
 //        if (pairList != null)
