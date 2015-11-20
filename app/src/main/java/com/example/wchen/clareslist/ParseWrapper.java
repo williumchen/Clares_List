@@ -205,17 +205,6 @@ public class ParseWrapper {
         file.saveInBackground();
         return file;
 
-//        // Create a New Class called "ImageUpload" in Parse
-//        ParseObject imgUpload = new ParseObject("ImageUpload");
-//
-//        // Create a column named "ImageName" and set the string
-//        imgUpload.put("ImageName", "Photo");
-//
-//        // Create a column named "ImageFile" and insert the image
-//        imgUpload.put("ImageFile", file);
-//
-//        // Create the class and the columns
-//        imgUpload.saveInBackground();
     }
 
 //        if (pairList != null)

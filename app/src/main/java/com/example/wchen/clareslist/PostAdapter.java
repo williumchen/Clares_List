@@ -18,7 +18,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         protected TextView nameTextView;
         protected TextView descriptionTextView;
         protected TextView contactTextView;
-        protected ResizableImageView itemImage;
+        //protected ResizableImageView itemImage;
         private Context context;
 
         // Constructor takes in context and the itemView
@@ -71,6 +71,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         itemView.setText(post.getItem());
         TextView descView = viewHolder.descriptionTextView;
         descView.setText(post.getDescription());
+        TextView contView = viewHolder.contactTextView;
+        contView.setText(post.getContact());
+//        ParseFile file = post.getImage();
+//        file.getDataInBackground(file.getName(), new GetDataCallback() {
+//            public void done(byte[] data, ParseException e) {
+//                if (e == null) {
+//                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+//                    ResizableImageView imgView = viewHolder.itemImage;
+//                    imgView.setImageBitmap(bmp);
+//                }
+//                else
+//                {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+        //ParseImageView imgView = viewHolder.itemImage;
+        //imgView.setParseFile(post.getImage());
     }
 
     @Override

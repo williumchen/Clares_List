@@ -23,6 +23,7 @@ public class PostViewActivity extends Activity {
         String item = intent.getStringExtra("item");
         String description = intent.getStringExtra("description");
         String contact = intent.getStringExtra("contact");
+
         // Set item and description view objects to their strings
         txtItem.setText(item);
         txtDescription.setText(description);
