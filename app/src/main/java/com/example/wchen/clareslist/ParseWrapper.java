@@ -24,8 +24,6 @@ public class ParseWrapper {
     protected static ParseUser currentUser;
 
     public ParseWrapper() {
-        currentUser = ParseUser.getCurrentUser();
-        userID = currentUser.getObjectId();
     }
 
     public void setCurrentUser() {
@@ -57,83 +55,114 @@ public class ParseWrapper {
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
+                    Log.d("debugging user", "log-in failed");
                 }
             }
         });
     }
 
     public void maybeLogInUser(String email, String password) {
-        ParseUser.logInInBackground(email, password, new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    userID = user.getObjectId();
-                    // Hooray! The user is logged in.
-                } else {
-                    // Sign up failed. Look at the ParseException to see what happened.
-                }
-            }
-        });
+        try {
+            ParseUser.logIn(email, password);
+            currentUser = ParseUser.getCurrentUser();
+            userID = currentUser.getObjectId();
+        }
+        catch (ParseException e) {
+            Log.d("debugging user", "log-in failed");
+            Log.d("debugging user", e.getMessage());
+        }
+//        ParseUser.logInInBackground(email, password, new LogInCallback() {
+//            public void done(ParseUser user, ParseException e) {
+//                if (user != null) {
+//                    currentUser = user;
+//                    userID = user.getObjectId();
+//                    // Hooray! The user is logged in.
+//                } else {
+//                    // Sign up failed. Look at the ParseException to see what happened.
+//                    Log.d("debugging user", "Log-in failed");
+//                    Log.d("debugging user", e.getMessage());
+//                }
+//            }
+//        });
     }
 
     public ParseObject getCategory(String category) {
         ParseQuery<ParseObject> categoryQuery = ParseQuery.getQuery("Category");
+        Log.d("debugging GGGGGGGG", category);
         categoryQuery.whereEqualTo("category", category);
         try {
             return categoryQuery.getFirst();
         }
         catch (ParseException e) {
             // some error
+            Log.d("debugging", "FAILED GET CATEGORY");
+            Log.d("debugging", e.getMessage());
+            return new ParseObject("Category");
         }
-
-        return new ParseObject("Category");
 
     }
 
     public void subscribeUser(String category, boolean add) {
-        ParseObject myCategory = getCategory("category");
-        myCategory.put("category", category);
-        ParseRelation<ParseObject> relation = currentUser.getRelation("categories");
+        ParseObject myCategory = getCategory(category);
+//        try {
+//            myCategory.save();
+//        }
+//        catch (ParseException e) {
+//            Log.d("debugging", "didn't work save category");
+//
+//        }
+        ParseUser mCurrentUser = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = mCurrentUser.getRelation("categories");
         //final boolean[] subscribe = {checkSubscription(category)};
 
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
 
         subscriptionsQuery.whereEqualTo("category", category);
         List<ParseObject> subscriptions;
+        boolean subscribed;
         try {
             subscriptions = subscriptionsQuery.find();
-            boolean subscribed = subscriptions.size() != 0;
-            if(add && !subscribed) {
-                Log.d("debugging", "attempted to add");
-                relation.add(myCategory);
-                Log.d("debugging", "added..?");
-            }
-            else if (!add && subscribed) {
-                Log.d("debugging", "attempted to remove");
-                relation.remove(myCategory);
-            }
         }
         catch (ParseException e) {
-            // some error!
+            //
+            Log.d("debugging", "didn't work");
+            return;
         }
-
-        currentUser.saveInBackground();
+        subscribed = subscriptions.size() != 0;
+        if(add && !subscribed) {
+            relation.add(myCategory);
+        }
+        else if (!add && subscribed) {
+            Log.d("debugging", "attempted to remove");
+            relation.remove(myCategory);
+        }
+        Log.d("debugging", mCurrentUser.getObjectId());
+        try {
+            mCurrentUser.save();
+            return;
+        }
+        catch (ParseException e) {
+            Log.d("debugging", "save failed, attempt background");
+            Log.d("debugging", e.getMessage());
+            mCurrentUser.saveInBackground();
+        }
     }
 
     public Boolean checkSubscription(String category) {
-        ParseObject myCategory = getCategory(category);
-        myCategory.put("category", category);
-        ParseRelation<ParseObject> relation = currentUser.getRelation("categories");
+        ParseRelation<ParseObject> relation = ParseUser.getCurrentUser().getRelation("categories");
         //final boolean[] subscribe = {checkSubscription(category)};
 
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
 
         subscriptionsQuery.whereEqualTo("category", category);
-        List<ParseObject> subscriptions = new ArrayList<ParseObject>();
+        List<ParseObject> subscriptions = new ArrayList<>();
         try {
             subscriptions = subscriptionsQuery.find();
             //Log.d("debugging", "subscription length: " + subscriptions.toString());
         }
         catch (ParseException e) {
+            Log.d("debugging", "some error on checking subscription");
+            Log.d("debugging", e.getMessage());
             // some error
         }
 

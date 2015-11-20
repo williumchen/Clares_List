@@ -72,14 +72,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         final ParseWrapper parse = new ParseWrapper();
         final String category = mCategory.get(position);
-        TextView itemView = viewHolder.categoryTextView;
+        final TextView itemView = viewHolder.categoryTextView;
         itemView.setText(category);
         final Button button = viewHolder.subButton;
         System.out.println(category);
         System.out.println(parse.checkSubscription(category));
         if (parse.checkSubscription(category)) {
             button.setText("Unsubscribe");
-            button.setEnabled(false);
+            button.setEnabled(true);
         }
         else {
             button.setText("Subscribe");
@@ -87,13 +87,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("TEST");
                 String sub = button.getText().toString();
                 if (sub == "Subscribe") {
                     parse.subscribeUser(category, true);
                     Log.d("DEBUGGGINGG", category);
                 } else {
                     parse.subscribeUser(category, false);
+                }
+                if (parse.checkSubscription(category)) {
+                    button.setText("Unsubscribe");
+                    button.setEnabled(true);
+                }
+                else {
+                    button.setText("Subscribe");
+                    button.setEnabled(true);
                 }
             }
         });

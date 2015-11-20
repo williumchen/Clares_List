@@ -23,8 +23,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ParseWrapper pw = new ParseWrapper();
-        pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
+
 
         // Get intent from CategoryActivity and determine category
         Intent categoryIntent = getIntent();
@@ -33,6 +32,7 @@ public class MainActivity extends Activity {
         // Initialize the recycler view
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
+        pw = new ParseWrapper();
         PostAdapter adapter = new PostAdapter(pw.getPostsInCategory(category));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
