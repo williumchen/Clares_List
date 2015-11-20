@@ -22,12 +22,22 @@
         android:inputType="textMultiLine"
         android:singleLine="false"/>
 
+    <EditText
+        android:id="@+id/submit_contact"
+        android:text=""
+        android:hint="Contact Info"
+        android:layout_below="@id/submit_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:singleLine="false"/>
+
     <Spinner
         android:id="@+id/submit_category"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:entries="@array/category"
-        android:layout_below="@id/submit_description"
+        android:layout_below="@id/submit_contact"
         android:layout_marginTop="10dp"
         android:spinnerMode="dropdown"/>
 

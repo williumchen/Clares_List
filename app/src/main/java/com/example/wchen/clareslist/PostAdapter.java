@@ -17,6 +17,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView nameTextView;
         protected TextView descriptionTextView;
+        protected TextView contactTextView;
         protected ResizableImageView itemImage;
         private Context context;
 
@@ -26,6 +27,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // Fetch the item and description view objects in the recycler view
             nameTextView = (TextView) itemView.findViewById(R.id.item);
             descriptionTextView = (TextView) itemView.findViewById(R.id.description);
+            contactTextView = (TextView) itemView.findViewById(R.id.contact);
             //itemImage = (ResizableImageView) itemView.findViewById(R.id.picture);
             this.context = context;
             // Set itemView to be an onclick listener
@@ -38,6 +40,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             Intent nextScreen = new Intent(view.getContext(), PostViewActivity.class);
             nextScreen.putExtra("item", nameTextView.getText().toString());
             nextScreen.putExtra("description", descriptionTextView.getText().toString());
+            nextScreen.putExtra("contact", contactTextView.getText().toString());
             view.getContext().startActivity(nextScreen);
             //Toast.makeText(context, nameTextView.getText(), Toast.LENGTH_SHORT).show();
         }

@@ -132,7 +132,8 @@ public class ParseWrapper {
         query.setLimit(10);
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"), parsePost.getString("category")));
+                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getString("image"), parsePost.getString("contact")));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -187,7 +188,7 @@ public class ParseWrapper {
             String lowDescription = post.mDescription.toLowerCase();
             String lowItem = post.mItem.toLowerCase();
             if (lowDescription.contains(key) || lowItem.contains(key)) {
-                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory, post.mImage));
+                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory, post.mImage, post.mContact));
             }
         }
 

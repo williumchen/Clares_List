@@ -37,6 +37,7 @@ public class SubmitViewActivity extends Activity {
         final ParseWrapper parse = new ParseWrapper();
         final EditText newItem = (EditText) findViewById(R.id.submit_item);
         final EditText newDesc = (EditText) findViewById(R.id.submit_description);
+        final EditText newContact = (EditText) findViewById(R.id.submit_contact);
         // Change edittext to drop down menu later
         final Spinner newCategory = (Spinner) findViewById(R.id.submit_category);
 
@@ -74,11 +75,11 @@ public class SubmitViewActivity extends Activity {
                 String descString = newDesc.getText().toString();
                 String categoryString = newCategory.getSelectedItem().toString();
                 String imageString = newImage.getWholeText().toString();
-                //String imageString =
+                String contactString = newContact.getText().toString();
 
                 // Construct new post using item and desc
                 // Add more to this (maybe image?)
-                Posts newPost = new Posts(itemString, descString, categoryString, imageString);
+                Posts newPost = new Posts(itemString, descString, categoryString, imageString, contactString);
                 // Push post to db
                 parse.pushPost(newPost);
                 finish();

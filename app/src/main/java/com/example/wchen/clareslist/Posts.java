@@ -13,13 +13,16 @@ public class Posts {
     protected String mCategory;
     protected String mID;
     protected String mImage;
+    protected String mContact;
 
     // Post constructor takes in item and description (add image later)
-    public Posts(String item, String description, String category, String image) {
+    public Posts(String item, String description, String category, String image, String contact) {
         mItem = item;
         mDescription = description;
         mCategory = category;
         mImage = image;
+        mContact = contact;
+
     }
 
     // Returns the item of post
@@ -38,6 +41,8 @@ public class Posts {
 
     public String getCategory() { return mCategory; }
 
+    public String getContact() { return mContact; }
+
     public String getImage() { return mImage; }
 
     public void setmID(String myID) {
@@ -55,7 +60,7 @@ public class Posts {
         pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
 
         for (int i=1; i<=numPosts; i++) {
-            dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId, "Bikes", "someImage.png");
+            dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId, "Bikes", "someImage.png", "My number");
             pw.pushPost(dbPost);
         }
         return pw.getPostsInCategory("Bikes");
