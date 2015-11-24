@@ -3,6 +3,7 @@ package com.example.wchen.clareslist;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,8 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
-import com.parse.ParseFile;
 
 import java.io.ByteArrayOutputStream;
 
@@ -70,7 +69,7 @@ public class SubmitViewActivity extends Activity {
                 String itemString = newItem.getText().toString();
                 String descString = newDesc.getText().toString();
                 String categoryString = newCategory.getSelectedItem().toString();
-                Bitmap bitmap = postImageView.getDrawingCache();
+                Bitmap bitmap = ((BitmapDrawable)postImageView.getDrawable()).getBitmap();
                 String contactString = newContact.getText().toString();
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -78,11 +77,8 @@ public class SubmitViewActivity extends Activity {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] image = stream.toByteArray();
 
-                ParseFile imageFile = parse.imageUpload(image);
-
-                // Construct new post using item and desc
-                // Add more to this (maybe image?)
-                Posts newPost = new Posts(itemString, descString, categoryString, imageFile, contactString);
+                // Construct new post
+                Posts newPost = new Posts(itemString, descString, categoryString, image, contactString);
                 // Push post to db
                 parse.pushPost(newPost);
                 finish();
@@ -99,27 +95,6 @@ public class SubmitViewActivity extends Activity {
             {
                 // the address of the image
                 postImageView.setImageURI(data.getData());
-
-//                Uri imageUri = data.getData();
-//
-//                InputStream inputStream;
-//
-//                try {
-//                    inputStream = getContentResolver().openInputStream(imageUri);
-//                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                    // Convert image to byte
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    // Compress image to lower quality scale 1 - 100
-//                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                    byte[] image = stream.toByteArray();
-//
-//                    ParseFile imageFile = pw.imageUpload(image);
-//
-//
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
-//                }
             }
         }
     }

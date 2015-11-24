@@ -95,9 +95,6 @@ public class ParseWrapper {
         parsePost.put("image", post.mImage);
         parsePost.put("contact", post.mContact);
 
-//        For future post images
-//        ParseFile picture = new ParseFile("image.png", post.picture);
-//        parsePost.put("picture", picture);
 
 //        Security settings for post objects, public read/private write
         ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
@@ -135,49 +132,18 @@ public class ParseWrapper {
         try {
             for (ParseObject parsePost : query.find()) {
                 postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
-                        parsePost.getString("category"), parsePost.getParseFile("image"), parsePost.getString("contact")));
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact")));
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> tempPostsList, ParseException e) {
-//                if (e == null) {
-//                    for (ParseObject post : tempPostsList) {
-//                        postsList.add(new Posts(post.getString("item"), post.getString("description")));
-//                    }
-//                    //Log.d("score", "Retrieved " + scoreList.size() + " scores");
-//                } else {
-//                    //Log.d("score", "Error: " + e.getMessage());
-//                }
-//            }
-//        });
+
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
         return postsList;
     }
 
-//    public List<Pair<String,String>> getPostInfo()
-//    {
-//        final ArrayList<Pair<String,String>> pairList = new ArrayList<>();
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
-//        query.orderByDescending("createdAt");
-//        query.setLimit(10);
-//
-//        try {
-//            for (ParseObject parsePost : query.find()) {
-//                Log.d("debugging search", "GOT A THING");
-//                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
-//                //new Pair<>(parsePost.getString("description"),
-//                pairList.add(Pair.create(parsePost.getString("description"),parsePost.getObjectId()));
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return pairList;
-//    }
 
     public List<Posts> getPostsWithKey(String key, String category) {
         final List<Posts> completePosts = getPostsInCategory(category);
@@ -206,33 +172,6 @@ public class ParseWrapper {
         return file;
 
     }
-
-//        if (pairList != null)
-//        {
-//            Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
-//
-//        }
-//        for (Pair<String,String> pair : pairList)
-//        {
-//            Log.d("debugging search", "first:" + pair.first);
-//            if (pair.first.contains(phrase))
-//            {
-//                //Log.d("debugging search", "found object with descrip" + pair.first);
-//                //Add that post to the list of posts
-//                ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
-//                query.getInBackground(pair.second, new GetCallback<ParseObject>() {
-//                    public void done(ParseObject object, ParseException e) {
-//                        if (e == null) {
-//                            // object will be post
-//                            postsList.add(new Posts(object.getString("item"), object.getString("description"), object.getString("category")));
-//                        } else {
-//                            // something went wrong
-//                        }
-//                    }
-//                });
-//            }
-//        }
-//
 
 
     public String getUserID() { return userID; }
