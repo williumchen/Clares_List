@@ -27,6 +27,7 @@ public class SubmitViewActivity extends Activity {
         // Change edittext to drop down menu later
         final Spinner newCategory = (Spinner) findViewById(R.id.submit_category);
 
+        // this should be changed to an enumeration in the constants class
         if (category.equals("Furniture")) newCategory.setSelection(0);
         if (category.equals("Appliances")) newCategory.setSelection(1);
         if (category.equals("Books")) newCategory.setSelection(2);

@@ -9,10 +9,16 @@ import android.view.MenuItem;
 // Class for displaying the categories
 
 public class CategoryActivity extends Activity {
+    ParseWrapper pw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_rc);
+
+        pw = new ParseWrapper();
+        pw.maybeLogInUser("mjeong+1@hmc.edu", "password");
+
         RecyclerView rvCategory = (RecyclerView) findViewById(R.id.rvCategory);
         // Create adapter passing in the sample user data
         CategoryAdapter adapter = new CategoryAdapter(CategoryAdapter.getCategory());
