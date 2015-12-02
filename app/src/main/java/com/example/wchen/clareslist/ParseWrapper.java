@@ -28,6 +28,12 @@ public class ParseWrapper {
         userID = ParseUser.getCurrentUser().getObjectId();
     }
 
+    /*
+    *
+    * Email must be verified BEFORE making this call.
+    *
+    *
+     */
     public void maybeCreateUser(String email, String password) {
         ParseUser user = new ParseUser();
 
