@@ -10,6 +10,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
@@ -86,8 +87,9 @@ public class ParseWrapper {
         return verified[0];
     }
 
-    public void pushPost(Posts post) {
-        ParseObject parsePost = new ParseObject("ParsePosts");
+    public void pushPost(final Posts post) {
+
+        final ParseObject parsePost = new ParseObject("ParsePosts");
 
         parsePost.put("item", post.mItem);
         parsePost.put("description", post.mDescription);
@@ -95,16 +97,27 @@ public class ParseWrapper {
         parsePost.put("image", post.mImage);
         parsePost.put("contact", post.mContact);
 
+        Log.d("hi", parsePost.getString("item"));
+        Log.d("hi", parsePost.getBytes("image").toString());
+
 
 //        Security settings for post objects, public read/private write
         ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
 
-        parsePost.saveInBackground();
+        parsePost.saveInBackground(new SaveCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Set post's ID
+                    post.setmID(parsePost.getObjectId());
+                } else {
+                    // something else
+                }
+            }
+            });
 
-        // Set post's ID
-        post.setmID(parsePost.getObjectId());
+
     }
 
     public void deletePost(Posts post) {

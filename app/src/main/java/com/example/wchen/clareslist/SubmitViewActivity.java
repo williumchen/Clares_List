@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +53,7 @@ public class SubmitViewActivity extends Activity {
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setType("image");
+                intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Post Image"), 1);
             }
@@ -76,6 +77,7 @@ public class SubmitViewActivity extends Activity {
                 // Compress image to lower quality scale 1 - 100
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] image = stream.toByteArray();
+                Log.d("help", image.toString());
 
                 // Construct new post
                 Posts newPost = new Posts(itemString, descString, categoryString, image, contactString);
@@ -88,14 +90,9 @@ public class SubmitViewActivity extends Activity {
 
     public void onActivityResult(int reqCode, int resCode, Intent data)
     {
-        ParseWrapper pw = new ParseWrapper();
-        if (resCode == RESULT_OK)
+        if (reqCode == 1 && resCode == RESULT_OK && data != null)
         {
-            if (reqCode == 1)
-            {
-                // the address of the image
-                postImageView.setImageURI(data.getData());
-            }
+            postImageView.setImageURI(data.getData());
         }
     }
 
