@@ -40,6 +40,7 @@
         </activity>
         <activity
             android:name=".SubmitViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_submit_view"
             android:parentActivityName=".MainActivity" >
             <meta-data

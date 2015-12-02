@@ -2,9 +2,7 @@ package com.example.wchen.clareslist;
 
 import android.util.Log;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.LogInCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -12,7 +10,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
@@ -220,7 +217,7 @@ public class ParseWrapper {
         return verified[0];
     }
 
-    public void pushPost(final Posts post) {
+    public void pushPost(Posts post) {
 
         final ParseObject parsePost = new ParseObject("ParsePosts");
 
@@ -238,17 +235,29 @@ public class ParseWrapper {
         ParseACL postsACL = new ParseACL(currentUser);
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
+        try {
+            parsePost.save();
+        }
+        catch (ParseException e) {
+            Log.d("debugging", "save failed, attempt background");
+            Log.d("debugging", e.getMessage());
+            parsePost.saveInBackground();
+            // idk
+        }
+//        parsePost.save();
 
-        parsePost.saveInBackground(new SaveCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    // Set post's ID
-                    post.setmID(parsePost.getObjectId());
-                } else {
-                    // something else
-                }
-            }
-            });
+        post.setmID(parsePost.getObjectId());
+
+//        parsePost.saveInBackground(new SaveCallback() {
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    // Set post's ID
+//                    post.setmID(parsePost.getObjectId());
+//                } else {
+//                    // something else
+//                }
+//            }
+//            });
 
 
     }

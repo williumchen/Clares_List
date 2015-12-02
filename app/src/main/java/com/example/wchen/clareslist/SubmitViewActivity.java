@@ -76,7 +76,7 @@ public class SubmitViewActivity extends Activity {
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // Compress image to lower quality scale 1 - 100
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                bitmap.compress(Bitmap.CompressFormat.WEBP, 1, stream);
                 byte[] image = stream.toByteArray();
                 Log.d("help", image.toString());
 

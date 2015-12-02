@@ -2,6 +2,8 @@ package com.example.wchen.clareslist;
 
 import android.util.Log;
 
+import com.parse.ParseUser;
+
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class Search {
     {
         Search dSearch = new Search(text, category);
         ParseWrapper wrap = new ParseWrapper();
-        wrap.maybeGetCurrentUser();
+        ParseUser.getCurrentUser();
         List<Posts> result  = wrap.getPostsWithKey(dSearch.mText, dSearch.mCategory);
         if (result != null)
         {
