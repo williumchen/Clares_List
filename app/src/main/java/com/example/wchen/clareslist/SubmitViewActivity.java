@@ -7,11 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-<<<<<<< HEAD
 import android.widget.Spinner;
-=======
 import android.widget.Toast;
->>>>>>> 36b3e95ba9d65e256f3bbf4829ed1c9f4caa4098
 
 /**
  * Created by wchen on 10/5/15.
