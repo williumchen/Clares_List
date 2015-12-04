@@ -47,7 +47,6 @@ public class Posts {
         List<Posts> posts = new ArrayList<>();
         Posts dbPost;
         ParseWrapper pw = new ParseWrapper();
-
         pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
 
         for (int i=1; i<=numPosts; i++) {
