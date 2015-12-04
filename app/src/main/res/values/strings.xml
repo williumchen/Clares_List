@@ -25,4 +25,5 @@
         <item>@string/misc</item>
     </string-array>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_intermediate">IntermediateActivity</string>
 </resources>
