@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 public class SubmitViewActivity extends Activity {
 
     ImageView postImageView;
+    byte[] noImg = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,11 @@ public class SubmitViewActivity extends Activity {
 
         final Button uploadBtn = (Button) findViewById(R.id.upload_button);
         postImageView = (ImageView) findViewById(R.id.image);
+        Bitmap bm = ((BitmapDrawable)postImageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Compress image to lower quality scale 1 - 100
+        bm.compress(Bitmap.CompressFormat.WEBP, 1, stream);
+        noImg = stream.toByteArray();
 
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -84,16 +90,11 @@ public class SubmitViewActivity extends Activity {
                 Log.d("size of image", String.valueOf(length));
                 if (image.length >= 128000)
                 {
+                    image = noImg;
+                    // Code from:
+                    // http://developer.android.com/guide/topics/ui/notifiers/toasts.html
                     Context context = getApplicationContext();
                     CharSequence text = "Image too big. Please choose another!";
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-                if (image == null)
-                {
-                    Context context = getApplicationContext();
-                    CharSequence text = "No image uploaded!";
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();

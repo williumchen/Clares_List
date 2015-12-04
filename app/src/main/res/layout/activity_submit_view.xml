@@ -49,12 +49,21 @@
         <!--android:layout_width=""-->
         <!--android:layout_height="" />-->
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/submit_category"
+        android:text="Image to be Uploaded: "
+        android:layout_marginTop="10dp"
+        android:id="@+id/info" />
+
     <ImageView
         android:id="@+id/image"
         android:adjustViewBounds="false"
-        android:layout_below="@id/submit_category"
+        android:layout_below="@id/info"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
         android:src="@mipmap/no_image" />
 
     <Button
@@ -65,7 +74,7 @@
         android:layout_below="@id/image"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:text="Upload Image"
+        android:text="Choose Image"
         android:background="@color/plus"
         android:textColor="#FFFFFF"/>
 
@@ -75,7 +84,7 @@
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/upload_button"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="10dp"
         android:text="Submit"
         android:background="@color/plus"
