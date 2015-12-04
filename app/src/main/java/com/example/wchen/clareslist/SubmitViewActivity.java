@@ -118,6 +118,7 @@ public class SubmitViewActivity extends Activity {
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Get the back button to work

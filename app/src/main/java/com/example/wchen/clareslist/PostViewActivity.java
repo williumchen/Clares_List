@@ -30,6 +30,7 @@ public class PostViewActivity extends Activity {
         txtContact.setText(contact);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Get the back button to work

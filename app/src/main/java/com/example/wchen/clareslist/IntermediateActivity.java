@@ -21,12 +21,16 @@ public class IntermediateActivity extends Activity {
             public void onClick(View v) {
                 Intent nextScreen = new Intent(v.getContext(), CategoryActivity.class);
                 v.getContext().startActivity(nextScreen);
-                finish();
             }
         });
 
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

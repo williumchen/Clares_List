@@ -42,6 +42,12 @@ public class CategoryActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Get the back button to work
         switch (item.getItemId()) {

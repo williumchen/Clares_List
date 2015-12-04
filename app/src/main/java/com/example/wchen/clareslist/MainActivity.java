@@ -65,8 +65,6 @@ public class MainActivity extends Activity {
                 searchScreen.putExtra("key", newKey.getText().toString());
                 searchScreen.putExtra("category", category);
                 v.getContext().startActivity(searchScreen);
-
-                finish();
             }
         });
 //        recList.setHasFixedSize(true);
