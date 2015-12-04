@@ -227,9 +227,6 @@ public class ParseWrapper {
         parsePost.put("image", post.mImage);
         parsePost.put("contact", post.mContact);
 
-        Log.d("hi", parsePost.getString("item"));
-        Log.d("hi", parsePost.getBytes("image").toString());
-
 
 //        Security settings for post objects, public read/private write
         ParseACL postsACL = new ParseACL(currentUser);

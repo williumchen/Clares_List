@@ -1,6 +1,7 @@
 package com.example.wchen.clareslist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
@@ -78,7 +80,25 @@ public class SubmitViewActivity extends Activity {
                 // Compress image to lower quality scale 1 - 100
                 bitmap.compress(Bitmap.CompressFormat.WEBP, 1, stream);
                 byte[] image = stream.toByteArray();
-                Log.d("help", image.toString());
+                int length = image.length;
+                Log.d("size of image", String.valueOf(length));
+                if (image.length >= 128000)
+                {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Image too big. Please choose another!";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                if (image == null)
+                {
+                    Context context = getApplicationContext();
+                    CharSequence text = "No image uploaded!";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                }
 
                 // Construct new post
                 Posts newPost = new Posts(itemString, descString, categoryString, image, contactString);

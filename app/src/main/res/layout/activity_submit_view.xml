@@ -54,7 +54,8 @@
         android:adjustViewBounds="false"
         android:layout_below="@id/submit_category"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:src="@mipmap/no_image" />
 
     <Button
         android:id="@+id/upload_button"
