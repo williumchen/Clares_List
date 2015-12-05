@@ -1,0 +1,81 @@
+package com.example.wchen.clareslist;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class UserPostViewActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_post_view);
+
+        final ParseWrapper parse = new ParseWrapper();
+
+        // Initialize the item and description view objects
+        TextView txtItem = (TextView) findViewById(R.id.txtItem);
+        TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
+        TextView txtContact = (TextView) findViewById(R.id.txtContact);
+        // Fetch intent and obtain item and description strings
+        Intent intent = getIntent();
+        String item = intent.getStringExtra("item");
+        String description = intent.getStringExtra("description");
+        String contact = intent.getStringExtra("contact");
+        final String postID = intent.getStringExtra("id");
+        final byte[] image = intent.getByteArrayExtra("image");
+
+        // Set item and description view objects to their strings
+        txtItem.setText(item);
+        txtDescription.setText(description);
+        txtContact.setText(contact);
+
+        final Button editBtn = (Button) findViewById(R.id.edit_button);
+        final Button deleteBtn = (Button) findViewById(R.id.delete_button);
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                parse.deletePost(postID);
+                Intent nextScreen = new Intent(v.getContext(), CategoryActivity.class);
+                v.getContext().startActivity(nextScreen);
+            }
+        });
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent();
+
+                parse.deletePost(postID);
+                Intent nextScreen = new Intent(v.getContext(), SubmitViewActivity.class);
+                v.getContext().startActivity(nextScreen);
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_user_post_view, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+}

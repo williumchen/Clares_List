@@ -26,4 +26,5 @@
     </string-array>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_intermediate">IntermediateActivity</string>
+    <string name="title_activity_user_post_view">UserPostViewActivity</string>
 </resources>

@@ -5,7 +5,6 @@ import android.util.Log;
 import com.parse.GetCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -241,27 +240,12 @@ public class ParseWrapper {
             parsePost.saveInBackground();
             // idk
         }
-//        parsePost.save();
 
         post.setmID(parsePost.getObjectId());
 
-//        parsePost.saveInBackground(new SaveCallback() {
-//            public void done(ParseException e) {
-//                if (e == null) {
-//                    // Set post's ID
-//                    post.setmID(parsePost.getObjectId());
-//                } else {
-//                    // something else
-//                }
-//            }
-//            });
-
-
     }
 
-    public void deletePost(Posts post) {
-        String postID = post.getID();
-
+    public void deletePost(String postID) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
@@ -313,16 +297,6 @@ public class ParseWrapper {
         }
 
         return postsList;
-    }
-
-    public ParseFile imageUpload(byte[] image) {
-
-        // Create the ParseFile
-        ParseFile file = new ParseFile("photo.png", image);
-        // Upload the image into Parse Cloud
-        file.saveInBackground();
-        return file;
-
     }
 
 
