@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.parse.ParseUser;
@@ -19,10 +20,13 @@ public class UserPostsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_posts_list);
 
+        Log.d("user", "HEREEEEEEE");
+
         pw = new ParseWrapper();
         // Initialize the recycler view
         recList = (RecyclerView) findViewById(R.id.cardList);
         String userID = ParseUser.getCurrentUser().getObjectId();
+        Log.d("user", userID);
         adapter = new PostAdapter(pw.getPostsWithOwner(userID));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));

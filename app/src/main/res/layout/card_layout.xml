@@ -54,7 +54,7 @@
             android:layout_marginLeft="15dp" />
 
         <TextView
-            android:id="@+id/id"
+            android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="1dp"

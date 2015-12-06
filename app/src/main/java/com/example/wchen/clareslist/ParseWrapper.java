@@ -225,7 +225,7 @@ public class ParseWrapper {
         parsePost.put("category", post.mCategory);
         parsePost.put("image", post.mImage);
         parsePost.put("contact", post.mContact);
-        parsePost.put("userID", ParseUser.getCurrentUser());
+        parsePost.put("userID", ParseUser.getCurrentUser().getObjectId());
 
 
 //        Security settings for post objects, public read/private write
@@ -281,6 +281,8 @@ public class ParseWrapper {
     }
 
     public List<Posts> getPostsWithOwner(String userID) {
+        Log.d("user", "in parse wrapper");
+        Log.d("user", userID);
         final ArrayList<Posts> postsList = new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.whereEqualTo("userID", userID);
@@ -297,6 +299,7 @@ public class ParseWrapper {
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
+        Log.d("user", String.valueOf(postsList.size()));
         return postsList;
     }
 
