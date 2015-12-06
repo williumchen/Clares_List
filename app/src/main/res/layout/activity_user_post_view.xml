@@ -45,6 +45,14 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"/>
 
+            <ImageView
+                android:id="@+id/postImg"
+                android:adjustViewBounds="false"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/txtContact"
+                android:layout_marginTop="10dp" />
+
             <Button
                 android:id="@+id/edit_button"
                 android:layout_width="wrap_content"
@@ -54,7 +62,7 @@
                 android:background="#008fff"
                 android:textColor="#FFFFFF"
                 android:layout_alignTop="@+id/delete_button"
-                android:layout_alignStart="@+id/txtItem" />
+                android:layout_alignStart="@+id/postImg" />
 
             <Button
                 android:id="@+id/delete_button"
