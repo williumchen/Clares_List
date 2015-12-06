@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TextView contView = viewHolder.contactTextView;
         contView.setText(post.getContact());
         TextView idView = viewHolder.idTextView;
+        if (post.getID() == null)
+        {
+            Log.d("id", "why?");
+        }
+        else{
+            Log.d("id", post.getID());
+        }
         idView.setText(post.getID());
         byte[] data = post.getImage();
         if (data != null) {

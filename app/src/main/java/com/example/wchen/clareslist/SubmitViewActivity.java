@@ -31,8 +31,8 @@ public class SubmitViewActivity extends Activity {
         setContentView(R.layout.activity_submit_view);
         // Grab intent on click of floating action button
         Intent intent = getIntent();
-        final String category = intent.getStringExtra("category");
         final int edit = intent.getIntExtra("id", 0);
+        final String category = intent.getStringExtra("category");
 
         // Initialize parse db, and grab item / desc from view
         final ParseWrapper parse = new ParseWrapper();

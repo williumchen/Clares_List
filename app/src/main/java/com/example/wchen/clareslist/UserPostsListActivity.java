@@ -1,6 +1,7 @@
 package com.example.wchen.clareslist;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ public class UserPostsListActivity extends AppCompatActivity {
     PostAdapter adapter;
     RecyclerView recList;
     ParseWrapper pw;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,27 @@ public class UserPostsListActivity extends AppCompatActivity {
         adapter = new PostAdapter(pw.getPostsWithOwner(userID));
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
+        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        // Swipe to refresh widget
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItems();
+            }
+        });
     }
 
+    void refreshItems() {
+        pw = new ParseWrapper();
+        recList = (RecyclerView) findViewById(R.id.cardList);
+        String userID = ParseUser.getCurrentUser().getObjectId();
+        adapter = new PostAdapter(pw.getPostsWithOwner(userID));
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        recList.setAdapter(adapter);
+        recList.setLayoutManager(new LinearLayoutManager(this));
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
 
     @Override

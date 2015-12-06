@@ -242,6 +242,7 @@ public class ParseWrapper {
         }
 
         post.setmID(parsePost.getObjectId());
+        Log.d("id", post.getID());
 
     }
 
@@ -250,6 +251,7 @@ public class ParseWrapper {
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
+                    Log.d("delete", "about to delete!");
                     object.deleteInBackground();
                 } else {
                     // something went wrong

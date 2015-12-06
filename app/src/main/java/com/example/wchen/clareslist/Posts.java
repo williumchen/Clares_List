@@ -22,6 +22,7 @@ public class Posts {
         mCategory = category;
         mImage = image;
         mContact = contact;
+        mID = "nothing yet";
 
     }
 

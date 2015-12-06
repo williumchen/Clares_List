@@ -3,6 +3,7 @@ package com.example.wchen.clareslist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,8 +48,9 @@ public class UserPostViewActivity extends AppCompatActivity {
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d("delete", postID);
                 parse.deletePost(postID);
-                Intent nextScreen = new Intent(v.getContext(), CategoryActivity.class);
+                Intent nextScreen = new Intent(v.getContext(), UserPostsListActivity.class);
                 v.getContext().startActivity(nextScreen);
             }
         });
@@ -59,10 +61,11 @@ public class UserPostViewActivity extends AppCompatActivity {
                 nextScreen.putExtra("item", item);
                 nextScreen.putExtra("description", description);
                 nextScreen.putExtra("contact", contact);
-                //nextScreen.putExtra("category", category);
+                nextScreen.putExtra("category", "Furniture");
                 //nextScreen.putExtra("image", image);
                 // 1 means that this intent is from pressing the edit button
                 nextScreen.putExtra("edit", 1);
+                Log.d("post ID is", postID);
                 parse.deletePost(postID);
                 v.getContext().startActivity(nextScreen);
             }
