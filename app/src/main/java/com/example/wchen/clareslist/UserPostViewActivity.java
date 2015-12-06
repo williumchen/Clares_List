@@ -28,9 +28,10 @@ public class UserPostViewActivity extends AppCompatActivity {
         ImageView postImg = (ImageView) findViewById(R.id.postImg);
         // Fetch intent and obtain item and description strings
         Intent intent = getIntent();
-        String item = intent.getStringExtra("item");
-        String description = intent.getStringExtra("description");
-        String contact = intent.getStringExtra("contact");
+        final String item = intent.getStringExtra("item");
+        final String description = intent.getStringExtra("description");
+        final String contact = intent.getStringExtra("contact");
+        final String category = intent.getStringExtra("category");
 
         final String postID = intent.getStringExtra("id");
         final byte[] image = intent.getByteArrayExtra("image");
@@ -57,10 +58,15 @@ public class UserPostViewActivity extends AppCompatActivity {
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent();
-
-                parse.deletePost(postID);
                 Intent nextScreen = new Intent(v.getContext(), SubmitViewActivity.class);
+                nextScreen.putExtra("item", item);
+                nextScreen.putExtra("description", description);
+                nextScreen.putExtra("contact", contact);
+                nextScreen.putExtra("category", category);
+                nextScreen.putExtra("image", image);
+                // 1 means that this intent is from pressing the edit button
+                nextScreen.putExtra("edit", 1);
+                parse.deletePost(postID);
                 v.getContext().startActivity(nextScreen);
             }
         });
