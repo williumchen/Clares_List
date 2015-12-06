@@ -225,6 +225,7 @@ public class ParseWrapper {
         parsePost.put("category", post.mCategory);
         parsePost.put("image", post.mImage);
         parsePost.put("contact", post.mContact);
+        parsePost.put("userID", ParseUser.getCurrentUser());
 
 
 //        Security settings for post objects, public read/private write
@@ -238,7 +239,6 @@ public class ParseWrapper {
             Log.d("debugging", "save failed, attempt background");
             Log.d("debugging", e.getMessage());
             parsePost.saveInBackground();
-            // idk
         }
 
         post.setmID(parsePost.getObjectId());
@@ -265,6 +265,26 @@ public class ParseWrapper {
         query.whereEqualTo("category", category);
         query.orderByDescending("createdAt");
         query.setLimit(10);
+        try {
+            for (ParseObject parsePost : query.find()) {
+                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact")));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (Posts post : postsList) {
+            Log.v(post.getItem(), post.getDescription());
+        }
+        return postsList;
+    }
+
+    public List<Posts> getPostsWithOwner(String userID) {
+        final ArrayList<Posts> postsList = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
+        query.whereEqualTo("userID", userID);
+        query.orderByDescending("createdAt");
         try {
             for (ParseObject parsePost : query.find()) {
                 postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
