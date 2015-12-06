@@ -32,11 +32,21 @@ public class SubmitViewActivity extends Activity {
         // Grab intent on click of floating action button
         Intent intent = getIntent();
         final String category = intent.getStringExtra("category");
+        final int edit = intent.getIntExtra("id", 0);
+
         // Initialize parse db, and grab item / desc from view
         final ParseWrapper parse = new ParseWrapper();
         final EditText newItem = (EditText) findViewById(R.id.submit_item);
         final EditText newDesc = (EditText) findViewById(R.id.submit_description);
         final EditText newContact = (EditText) findViewById(R.id.submit_contact);
+
+        if (edit == 1)
+        {
+            newItem.setText(intent.getStringExtra("item"));
+            newDesc.setText(intent.getStringExtra("description"));
+            newContact.setText(intent.getStringExtra("contact"));
+        }
+
         // Change edittext to drop down menu later
         final Spinner newCategory = (Spinner) findViewById(R.id.submit_category);
 

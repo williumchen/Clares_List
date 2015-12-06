@@ -1,15 +1,12 @@
 package com.example.wchen.clareslist;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UserPostViewActivity extends AppCompatActivity {
@@ -25,25 +22,25 @@ public class UserPostViewActivity extends AppCompatActivity {
         TextView txtItem = (TextView) findViewById(R.id.txtItem);
         TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
         TextView txtContact = (TextView) findViewById(R.id.txtContact);
-        ImageView postImg = (ImageView) findViewById(R.id.postImg);
+        //ImageView postImg = (ImageView) findViewById(R.id.postImg);
         // Fetch intent and obtain item and description strings
         Intent intent = getIntent();
         final String item = intent.getStringExtra("item");
         final String description = intent.getStringExtra("description");
         final String contact = intent.getStringExtra("contact");
-        final String category = intent.getStringExtra("category");
+        //final String category = intent.getStringExtra("category");
 
         final String postID = intent.getStringExtra("id");
-        final byte[] image = intent.getByteArrayExtra("image");
+        //final byte[] image = intent.getByteArrayExtra("image");
 
         // Set item, description, and contact view objects to their strings
         txtItem.setText(item);
         txtDescription.setText(description);
         txtContact.setText(contact);
-        if (image != null) {
-            Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
-            postImg.setImageBitmap(bmp);
-        }
+//        if (image != null) {
+//            Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
+//            postImg.setImageBitmap(bmp);
+//        }
 
         final Button editBtn = (Button) findViewById(R.id.edit_button);
         final Button deleteBtn = (Button) findViewById(R.id.delete_button);
@@ -62,8 +59,8 @@ public class UserPostViewActivity extends AppCompatActivity {
                 nextScreen.putExtra("item", item);
                 nextScreen.putExtra("description", description);
                 nextScreen.putExtra("contact", contact);
-                nextScreen.putExtra("category", category);
-                nextScreen.putExtra("image", image);
+                //nextScreen.putExtra("category", category);
+                //nextScreen.putExtra("image", image);
                 // 1 means that this intent is from pressing the edit button
                 nextScreen.putExtra("edit", 1);
                 parse.deletePost(postID);
