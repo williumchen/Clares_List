@@ -39,7 +39,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         @Override
         public void onClick(View view) {
             // On click, send intent containing the item and description of the card
-            Intent nextScreen = new Intent(view.getContext(), PostViewActivity.class);
+            Intent nextScreen;
+            if (view.getContext() instanceof MainActivity)
+            {
+                nextScreen = new Intent(view.getContext(), PostViewActivity.class);
+            }
+            else{
+                nextScreen = new Intent(view.getContext(), UserPostViewActivity.class);
+            }
             nextScreen.putExtra("item", nameTextView.getText().toString());
             nextScreen.putExtra("description", descriptionTextView.getText().toString());
             nextScreen.putExtra("contact", contactTextView.getText().toString());
