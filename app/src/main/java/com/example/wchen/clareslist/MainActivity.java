@@ -51,8 +51,6 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent submitScreen = new Intent(v.getContext(), SubmitViewActivity.class);
-                // 0 means this is not an edit post, but rather a new post
-                submitScreen.putExtra("edit", 0);
                 submitScreen.putExtra("category",category);
                 v.getContext().startActivity(submitScreen);
                 //Toast.makeText(getBaseContext(), "FAB clicked!", Toast.LENGTH_SHORT).show();

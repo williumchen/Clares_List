@@ -229,7 +229,7 @@ public class ParseWrapper {
 
 
 //        Security settings for post objects, public read/private write
-        ParseACL postsACL = new ParseACL(currentUser);
+        ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
         try {
@@ -242,7 +242,6 @@ public class ParseWrapper {
         }
 
         post.setmID(parsePost.getObjectId());
-        Log.d("id", post.getID());
 
     }
 
@@ -269,8 +268,10 @@ public class ParseWrapper {
         query.setLimit(10);
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
-                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact")));
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -291,8 +292,10 @@ public class ParseWrapper {
         query.orderByDescending("createdAt");
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
-                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact")));
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
             }
         } catch (ParseException e) {
             e.printStackTrace();

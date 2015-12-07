@@ -93,6 +93,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.wchen.clareslist.IntermediateActivity" />
         </activity>
+        <activity
+            android:name=".EditSubmitViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_edit_submit_view" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.UserPostsListActivity" />
+        </activity>
     </application>
 
 </manifest>

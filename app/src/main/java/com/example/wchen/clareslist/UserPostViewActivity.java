@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -52,32 +51,23 @@ public class UserPostViewActivity extends AppCompatActivity {
                 parse.deletePost(postID);
                 Intent nextScreen = new Intent(v.getContext(), UserPostsListActivity.class);
                 v.getContext().startActivity(nextScreen);
+                finish();
             }
         });
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent nextScreen = new Intent(v.getContext(), SubmitViewActivity.class);
+                Intent nextScreen = new Intent(v.getContext(), EditSubmitViewActivity.class);
                 nextScreen.putExtra("item", item);
                 nextScreen.putExtra("description", description);
                 nextScreen.putExtra("contact", contact);
-                nextScreen.putExtra("category", "Furniture");
-                //nextScreen.putExtra("image", image);
-                // 1 means that this intent is from pressing the edit button
-                nextScreen.putExtra("edit", 1);
-                Log.d("post ID is", postID);
                 parse.deletePost(postID);
                 v.getContext().startActivity(nextScreen);
+                finish();
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user_post_view, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
