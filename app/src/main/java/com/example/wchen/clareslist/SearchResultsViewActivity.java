@@ -1,13 +1,15 @@
 package com.example.wchen.clareslist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class SearchResultsViewActivity extends Activity {
 
@@ -19,34 +21,36 @@ public class SearchResultsViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results_view);
 
+        // intent has the key phrase that the user typed and the category to search through
         Intent intent = getIntent();
         String text = intent.getStringExtra("key");
         String category = intent .getStringExtra("category");
-        Log.d("debugging search", text);
 
         // Initialize the recycler view
         recList = (RecyclerView) findViewById(R.id.cardList);
-        // Connect adapter
 
-        adapter = new PostAdapter(Search.doSearch(text,category));
+        List<Posts> result = Search.doSearch(text,category);
+        // If there are no posts in result, then give user appropriate message
+        if (result.size() == 0)
+        {
+            // Code from:
+            // http://developer.android.com/guide/topics/ui/notifiers/toasts.html
+            Context context = getApplicationContext();
+            CharSequence message = "No posts contain the key phrase";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, message, duration);
+            toast.show();
+        }
+        // Connect adapter
+        adapter = new PostAdapter(result);
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search_results_view, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
         // Get the back button to work
         switch (item.getItemId()) {
             case android.R.id.home:

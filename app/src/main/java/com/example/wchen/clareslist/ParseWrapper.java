@@ -2,9 +2,7 @@ package com.example.wchen.clareslist;
 
 import android.util.Log;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.LogInCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -219,34 +217,40 @@ public class ParseWrapper {
     }
 
     public void pushPost(Posts post) {
-        ParseObject parsePost = new ParseObject("ParsePosts");
+
+        final ParseObject parsePost = new ParseObject("ParsePosts");
 
         parsePost.put("item", post.mItem);
         parsePost.put("description", post.mDescription);
         parsePost.put("category", post.mCategory);
+        parsePost.put("image", post.mImage);
+        parsePost.put("contact", post.mContact);
+        parsePost.put("userID", ParseUser.getCurrentUser().getObjectId());
 
-//        For future post images
-//        ParseFile picture = new ParseFile("image.png", post.picture);
-//        parsePost.put("picture", picture);
 
 //        Security settings for post objects, public read/private write
-        ParseACL postsACL = new ParseACL(currentUser);
+        ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
+        try {
+            parsePost.save();
+        }
+        catch (ParseException e) {
+            Log.d("debugging", "save failed, attempt background");
+            Log.d("debugging", e.getMessage());
+            parsePost.saveInBackground();
+        }
 
-        parsePost.saveInBackground();
-
-        // Set post's ID
         post.setmID(parsePost.getObjectId());
+
     }
 
-    public void deletePost(Posts post) {
-        String postID = post.getID();
-
+    public void deletePost(String postID) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
+                    Log.d("delete", "about to delete!");
                     object.deleteInBackground();
                 } else {
                     // something went wrong
@@ -264,94 +268,61 @@ public class ParseWrapper {
         query.setLimit(10);
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"), parsePost.getString("category")));
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> tempPostsList, ParseException e) {
-//                if (e == null) {
-//                    for (ParseObject post : tempPostsList) {
-//                        postsList.add(new Posts(post.getString("item"), post.getString("description")));
-//                    }
-//                    //Log.d("score", "Retrieved " + scoreList.size() + " scores");
-//                } else {
-//                    //Log.d("score", "Error: " + e.getMessage());
-//                }
-//            }
-//        });
+
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
         return postsList;
     }
 
-//    public List<Pair<String,String>> getPostInfo()
-//    {
-//        final ArrayList<Pair<String,String>> pairList = new ArrayList<>();
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
-//        query.orderByDescending("createdAt");
-//        query.setLimit(10);
-//
-//        try {
-//            for (ParseObject parsePost : query.find()) {
-//                Log.d("debugging search", "GOT A THING");
-//                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
-//                //new Pair<>(parsePost.getString("description"),
-//                pairList.add(Pair.create(parsePost.getString("description"),parsePost.getObjectId()));
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return pairList;
-//    }
+    public List<Posts> getPostsWithOwner(String userID) {
+        Log.d("user", "in parse wrapper");
+        Log.d("user", userID);
+        final ArrayList<Posts> postsList = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
+        query.whereEqualTo("userID", userID);
+        query.orderByDescending("createdAt");
+        try {
+            for (ParseObject parsePost : query.find()) {
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (Posts post : postsList) {
+            Log.v(post.getItem(), post.getDescription());
+        }
+        Log.d("user", String.valueOf(postsList.size()));
+        return postsList;
+    }
+
 
     public List<Posts> getPostsWithKey(String key, String category) {
         final List<Posts> completePosts = getPostsInCategory(category);
         final List<Posts> postsList = new ArrayList<>();
 
-        Log.d("debugging search", "initial: " + Integer.toString(postsList.size()));
-
         for (Posts post : completePosts) {
-            Log.d("debugging search", "desc: " + post.mDescription);
             String lowDescription = post.mDescription.toLowerCase();
             String lowItem = post.mItem.toLowerCase();
             if (lowDescription.contains(key) || lowItem.contains(key)) {
-                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory));
+                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory, post.mImage, post.mContact));
             }
         }
 
         return postsList;
     }
-
-//        if (pairList != null)
-//        {
-//            Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
-//
-//        }
-//        for (Pair<String,String> pair : pairList)
-//        {
-//            Log.d("debugging search", "first:" + pair.first);
-//            if (pair.first.contains(phrase))
-//            {
-//                //Log.d("debugging search", "found object with descrip" + pair.first);
-//                //Add that post to the list of posts
-//                ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
-//                query.getInBackground(pair.second, new GetCallback<ParseObject>() {
-//                    public void done(ParseObject object, ParseException e) {
-//                        if (e == null) {
-//                            // object will be post
-//                            postsList.add(new Posts(object.getString("item"), object.getString("description"), object.getString("category")));
-//                        } else {
-//                            // something went wrong
-//                        }
-//                    }
-//                });
-//            }
-//        }
-//
 
 
     public String getUserID() { return userID; }

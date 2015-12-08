@@ -17,7 +17,7 @@ public class CategoryActivity extends Activity {
         setContentView(R.layout.activity_category_rc);
 
         pw = new ParseWrapper();
-        pw.maybeLogInUser("mjeong+1@hmc.edu", "password");
+        pw.maybeLogInUser("mjeong+10@hmc.edu", "password");
 
         RecyclerView rvCategory = (RecyclerView) findViewById(R.id.rvCategory);
         // Create adapter passing in the sample user data
@@ -29,16 +29,12 @@ public class CategoryActivity extends Activity {
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         rvCategory.addItemDecoration(itemDecoration);
-//        findViewById(R.id.category).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TextView textCategory = (TextView) v;
-//                // Set up intent for post view
-//                Intent categorySelected = new Intent(v.getContext(), MainActivity.class);
-//                categorySelected.putExtra("category", textCategory.getText().toString());
-//                v.getContext().startActivity(categorySelected);
-//            }
-//        })
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
     }
 
     @Override
