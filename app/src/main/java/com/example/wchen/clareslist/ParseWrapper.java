@@ -101,7 +101,6 @@ public class ParseWrapper {
         ParseObject myCategory = getCategory(category);
         ParseUser mCurrentUser = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = mCurrentUser.getRelation("categories");
-        //final boolean[] subscribe = {checkSubscription(category)};
 
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
 
@@ -140,7 +139,6 @@ public class ParseWrapper {
 
     public Boolean checkSubscription(String category) {
         ParseRelation<ParseObject> relation = ParseUser.getCurrentUser().getRelation("categories");
-        //final boolean[] subscribe = {checkSubscription(category)};
 
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
 
