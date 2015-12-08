@@ -1,8 +1,5 @@
 package com.example.wchen.clareslist;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by wchen on 9/24/15.
  */
@@ -34,34 +31,22 @@ public class Posts {
         return mDescription;
     }
 
+    // Returns the object id, given by parse, of the post
     public String getID() {
         return mID;
     }
 
+    // Returns the category of the post
     public String getCategory() { return mCategory; }
 
+    // Returns the contact info of the post
     public String getContact() { return mContact; }
 
+    // Returns the byte array of the image of the post
     public byte[] getImage() { return mImage; }
 
+    // Sets the post id
     public void setmID(String myID) {
         mID = myID;
-    }
-
-    private static int uniquePostId = 0;
-
-    // For testing purposes only: populates an array list with posts
-    public static List<Posts> createPostsList(int numPosts) {
-        List<Posts> posts = new ArrayList<>();
-        Posts dbPost;
-        ParseWrapper pw = new ParseWrapper();
-
-        pw.maybeCreateUser("mjeong+10@hmc.edu", "password");
-
-        for (int i=1; i<=numPosts; i++) {
-            //dbPost = new Posts("Item" + ++uniquePostId, "Description" + uniquePostId, "Bikes", "someImage.png", "My number");
-            //pw.pushPost(dbPost);
-        }
-        return pw.getPostsInCategory("Bikes");
     }
 }

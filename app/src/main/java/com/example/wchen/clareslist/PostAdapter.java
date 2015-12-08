@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,24 +43,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public void onClick(View view) {
             // On click, send intent containing the item and description of the card
             Intent nextScreen;
+            // if we are the in the UserPostsListActivity
             if (view.getContext() instanceof UserPostsListActivity)
             {
+                // the next activity should be UserPostViewActivity so that user
+                // has the option to edit or delete the post
                 nextScreen = new Intent(view.getContext(), UserPostViewActivity.class);
+                // pass the object id in order to enable the edit or deletion
                 nextScreen.putExtra("id", idTextView.getText().toString());
             }
             else{
+                // otherwise, go to the regular post view
                 nextScreen = new Intent(view.getContext(), PostViewActivity.class);
             }
             nextScreen.putExtra("item", nameTextView.getText().toString());
             nextScreen.putExtra("description", descriptionTextView.getText().toString());
             nextScreen.putExtra("contact", contactTextView.getText().toString());
             view.getContext().startActivity(nextScreen);
-            //Toast.makeText(context, nameTextView.getText(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private List<Posts> mPosts;
-    // Constructor for post adapater, takes in a list of posts
+    // Constructor for post adapter, takes in a list of posts
     public PostAdapter(List<Posts> posts) {
         mPosts = posts;
     }
@@ -87,17 +90,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         descView.setText(post.getDescription());
         TextView contView = viewHolder.contactTextView;
         contView.setText(post.getContact());
+        // we have idView so that we may later pass the intent with the object id
         TextView idView = viewHolder.idTextView;
-        if (post.getID() == null)
-        {
-            Log.d("id", "why?");
-        }
-        else{
-            Log.d("id", post.getID());
-        }
         idView.setText(post.getID());
         byte[] data = post.getImage();
+        // if there is an image
         if (data != null) {
+            // Set the bitmap of imgView, which has a cropped height
             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
             ResizableImageView imgView = viewHolder.itemImage;
             imgView.setImageBitmap(bmp);

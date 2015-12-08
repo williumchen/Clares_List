@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
         pw = new ParseWrapper();
         // Connect adapter
         PostAdapter adapter = new PostAdapter(pw.getPostsInCategory(category));
-
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
         // Initialize swipe to refresh layout
