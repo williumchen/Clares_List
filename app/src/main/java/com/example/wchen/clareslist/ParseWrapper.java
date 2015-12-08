@@ -6,10 +6,14 @@ import com.parse.GetCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,10 +139,12 @@ public class ParseWrapper {
         subscribed = subscriptions.size() != 0;
         if(add && !subscribed) {
             relation.add(myCategory);
+            ParsePush.subscribeInBackground("Giants");
         }
         else if (!add && subscribed) {
             Log.d("debugging", "attempted to remove");
             relation.remove(myCategory);
+            ParsePush.unsubscribeInBackground("Giants");
         }
         Log.d("debugging", mCurrentUser.getObjectId());
         try {
@@ -241,6 +247,21 @@ public class ParseWrapper {
             parsePost.saveInBackground();
         }
 
+        JSONObject data = null;
+        try {
+            data = new JSONObject(
+                    "{\"alert\": \"A new item is available!\", " +
+                    "\"title\": \"Check out Clare's List!\"}");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ParsePush push = new ParsePush();
+        push.setChannel(post.mCategory);
+        push.setData(data);
+        push.sendInBackground();
+
+        // Set post's ID
         post.setmID(parsePost.getObjectId());
 
     }
