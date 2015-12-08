@@ -29,16 +29,6 @@ public class CategoryActivity extends Activity {
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         rvCategory.addItemDecoration(itemDecoration);
-//        findViewById(R.id.category).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TextView textCategory = (TextView) v;
-//                // Set up intent for post view
-//                Intent categorySelected = new Intent(v.getContext(), MainActivity.class);
-//                categorySelected.putExtra("category", textCategory.getText().toString());
-//                v.getContext().startActivity(categorySelected);
-//            }
-//        })
     }
 
     @Override

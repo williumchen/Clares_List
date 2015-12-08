@@ -334,10 +334,7 @@ public class ParseWrapper {
         final List<Posts> completePosts = getPostsInCategory(category);
         final List<Posts> postsList = new ArrayList<>();
 
-        Log.d("debugging search", "initial: " + Integer.toString(postsList.size()));
-
         for (Posts post : completePosts) {
-            Log.d("debugging search", "desc: " + post.mDescription);
             String lowDescription = post.mDescription.toLowerCase();
             String lowItem = post.mItem.toLowerCase();
             if (lowDescription.contains(key) || lowItem.contains(key)) {

@@ -15,9 +15,12 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // for now, we do nothing with the email entered in
+        // the current user will be determined by the Android device for now
         final EditText email = (EditText) findViewById(R.id.submit_email);
         final Button loginBtn = (Button) findViewById(R.id.login_button);
 
+        // takes us to the next screen
         loginBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent nextScreen = new Intent(v.getContext(), IntermediateActivity.class);

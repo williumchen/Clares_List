@@ -17,6 +17,7 @@ public class IntermediateActivity extends Activity {
         final Button postsBtn = (Button) findViewById(R.id.posts_button);
         final Button categoriesBtn = (Button) findViewById(R.id.categories_button);
 
+        // takes us to the list of categories, which will take a few seconds to load
         categoriesBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent nextScreen = new Intent(v.getContext(), CategoryActivity.class);
@@ -24,13 +25,14 @@ public class IntermediateActivity extends Activity {
             }
         });
 
+        // takes us to the list of the users posts, where the user is, for now, based
+        // on the Android device
         postsBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent nextScreen = new Intent(v.getContext(), UserPostsListActivity.class);
                 v.getContext().startActivity(nextScreen);
             }
         });
-
     }
 
     @Override
