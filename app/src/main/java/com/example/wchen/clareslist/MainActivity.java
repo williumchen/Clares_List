@@ -35,9 +35,8 @@ public class MainActivity extends Activity {
 
         // Initialize the recycler view
         recList = (RecyclerView) findViewById(R.id.cardList);
-        // Connect adapter
-
         pw = new ParseWrapper();
+        // Connect adapter
         PostAdapter adapter = new PostAdapter(pw.getPostsInCategory(category));
 
         recList.setAdapter(adapter);

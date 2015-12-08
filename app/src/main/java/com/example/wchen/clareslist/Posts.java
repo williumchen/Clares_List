@@ -15,7 +15,7 @@ public class Posts {
     protected byte[] mImage;
     protected String mContact;
 
-    // Post constructor takes in item and description (add image later)
+    // Post constructor takes in item, description, category, image, and contact info
     public Posts(String item, String description, String category, byte[] image, String contact) {
         mItem = item;
         mDescription = description;

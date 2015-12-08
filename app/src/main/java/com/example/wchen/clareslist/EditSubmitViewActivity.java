@@ -83,7 +83,7 @@ public class EditSubmitViewActivity extends AppCompatActivity {
                     // Code from:
                     // http://developer.android.com/guide/topics/ui/notifiers/toasts.html
                     Context context = getApplicationContext();
-                    CharSequence text = "Image too big. Please choose another!";
+                    CharSequence text = "Image too big. Go to My Posts and choose another!";
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
