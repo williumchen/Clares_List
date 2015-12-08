@@ -49,4 +49,5 @@ public class Posts {
     public void setmID(String myID) {
         mID = myID;
     }
+
 }

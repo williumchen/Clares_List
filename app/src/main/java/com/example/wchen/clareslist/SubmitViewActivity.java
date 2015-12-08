@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -113,6 +112,7 @@ public class SubmitViewActivity extends Activity {
                 Posts newPost = new Posts(itemString, descString, categoryString, image, contactString);
                 // Push post to parse
                 parse.pushPost(newPost);
+                Toast.makeText(getBaseContext(), "Post successfully added", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
