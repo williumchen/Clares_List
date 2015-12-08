@@ -1,12 +1,11 @@
 package com.example.wchen.clareslist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,12 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 
-/**
- * Created by wchen on 10/5/15.
- */
-public class SubmitViewActivity extends Activity {
+public class EditSubmitViewActivity extends AppCompatActivity {
 
     ImageView postImageView;
     // the byte array of the default image
@@ -30,30 +27,22 @@ public class SubmitViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_submit_view);
-        // Grab intent on click of floating action button
-        Intent intent = getIntent();
-        final String category = intent.getStringExtra("category");
+        setContentView(R.layout.activity_edit_submit_view);
 
-        // Initialize parse db, and grab item / desc from view
         final ParseWrapper parse = new ParseWrapper();
         final EditText newItem = (EditText) findViewById(R.id.submit_item);
         final EditText newDesc = (EditText) findViewById(R.id.submit_description);
         final EditText newContact = (EditText) findViewById(R.id.submit_contact);
 
-
-        // Change edittext to drop down menu later
         final Spinner newCategory = (Spinner) findViewById(R.id.submit_category);
-
-        // set category depending on selection
-        if (category.equals("Furniture")) newCategory.setSelection(0);
-        if (category.equals("Appliances")) newCategory.setSelection(1);
-        if (category.equals("Books")) newCategory.setSelection(2);
-        if (category.equals("Electronics")) newCategory.setSelection(3);
-        if (category.equals("Clothes")) newCategory.setSelection(4);
-        if (category.equals("Shoes")) newCategory.setSelection(5);
-        if (category.equals("Tickets")) newCategory.setSelection(6);
-        if (category.equals("Misc")) newCategory.setSelection(7);
+        // Make the category be Furniture, user can always select a different one
+        newCategory.setSelection(0);
+        // intent has the item, description, and contact texts from the users old post
+        // prefill these edittext views with this info
+        Intent intent = getIntent();
+        newItem.setText(intent.getStringExtra("item"));
+        newDesc.setText(intent.getStringExtra("description"));
+        newContact.setText(intent.getStringExtra("contact"));
 
         // allows user to choose an image by looking through the phone's gallery
         final Button uploadBtn = (Button) findViewById(R.id.upload_button);
@@ -74,7 +63,6 @@ public class SubmitViewActivity extends Activity {
             }
         });
 
-
         // Submit button pushes posts to db
         final Button submitBtn = (Button) findViewById(R.id.submit_button);
 
@@ -91,8 +79,6 @@ public class SubmitViewActivity extends Activity {
                 // Compress image to lower quality scale 1
                 bitmap.compress(Bitmap.CompressFormat.WEBP, 1, stream);
                 byte[] image = stream.toByteArray();
-                int length = image.length;
-                Log.d("size of image", String.valueOf(length));
                 // if the image exceeds the allowable number of bytes
                 if (image.length >= max)
                 {
@@ -102,7 +88,7 @@ public class SubmitViewActivity extends Activity {
                     // Code from:
                     // http://developer.android.com/guide/topics/ui/notifiers/toasts.html
                     Context context = getApplicationContext();
-                    CharSequence text = "Image too big. Please choose another!";
+                    CharSequence text = "Image too big. Go to My Posts and choose another!";
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
@@ -112,7 +98,6 @@ public class SubmitViewActivity extends Activity {
                 Posts newPost = new Posts(itemString, descString, categoryString, image, contactString);
                 // Push post to parse
                 parse.pushPost(newPost);
-                Toast.makeText(getBaseContext(), "Post successfully added", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

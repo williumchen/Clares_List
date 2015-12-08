@@ -3,13 +3,17 @@ package com.example.wchen.clareslist;
 import android.util.Log;
 
 import com.parse.GetCallback;
-import com.parse.LogInCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +22,23 @@ import java.util.List;
  * Created by kevin on 10/1/15.
  */
 public class ParseWrapper {
-    protected String userID;
+    protected static String userID;
+    protected static ParseUser currentUser;
 
     public ParseWrapper() {
-        userID = null;
     }
 
-    public void maybeGetCurrentUser() {
-        userID = ParseUser.getCurrentUser().getObjectId();
+    public void setCurrentUser() {
+        currentUser = ParseUser.getCurrentUser();
+        userID = currentUser.getObjectId();
     }
 
+    /*
+    *
+    * Email must be verified BEFORE making this call.
+    *
+    *
+     */
     public void maybeCreateUser(String email, String password) {
         ParseUser user = new ParseUser();
 
@@ -39,7 +50,7 @@ public class ParseWrapper {
         //user.setEmail(email);
 
         // other fields can be set just like with ParseObject
-        // user.put("phone", "650-253-0000");g
+        // user.put("phone", "650-253-0000");
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
@@ -47,26 +58,103 @@ public class ParseWrapper {
                     // Hooray! Let them use the app now.
 
                     // retrieve the object ID
-                    userID = ParseUser.getCurrentUser().getObjectId();
+                    currentUser = ParseUser.getCurrentUser();
+                    userID = currentUser.getObjectId();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
+                    Log.d("debugging user", "log-in failed");
                 }
             }
         });
     }
 
     public void maybeLogInUser(String email, String password) {
-        ParseUser.logInInBackground(email, password, new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    userID = user.getObjectId();
-                    // Hooray! The user is logged in.
-                } else {
-                    // Sign up failed. Look at the ParseException to see what happened.
-                }
-            }
-        });
+        try {
+            ParseUser.logIn(email, password);
+            currentUser = ParseUser.getCurrentUser();
+            userID = currentUser.getObjectId();
+        }
+        catch (ParseException e) {
+            Log.d("debugging user", "log-in failed");
+            Log.d("debugging user", e.getMessage());
+        }
+    }
+
+    public ParseObject getCategory(String category) {
+        ParseQuery<ParseObject> categoryQuery = ParseQuery.getQuery("Category");
+        Log.d("debugging GGGGGGGG", category);
+        categoryQuery.whereEqualTo("category", category);
+        try {
+            return categoryQuery.getFirst();
+        }
+        catch (ParseException e) {
+            // some error
+            Log.d("debugging", "FAILED GET CATEGORY");
+            Log.d("debugging", e.getMessage());
+            return new ParseObject("Category");
+        }
+
+    }
+
+    public void subscribeUser(String category, boolean add) {
+        ParseObject myCategory = getCategory(category);
+        ParseUser mCurrentUser = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = mCurrentUser.getRelation("categories");
+
+        ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
+
+        subscriptionsQuery.whereEqualTo("category", category);
+        List<ParseObject> subscriptions;
+        boolean subscribed;
+        try {
+            subscriptions = subscriptionsQuery.find();
+        }
+        catch (ParseException e) {
+            //
+            Log.d("debugging", "didn't work");
+            return;
+        }
+        subscribed = subscriptions.size() != 0;
+        if(add && !subscribed) {
+            relation.add(myCategory);
+            ParsePush.subscribeInBackground(category);
+        }
+        else if (!add && subscribed) {
+            Log.d("debugging", "attempted to remove");
+            relation.remove(myCategory);
+            ParsePush.unsubscribeInBackground(category);
+        }
+        Log.d("debugging", mCurrentUser.getObjectId());
+        try {
+            mCurrentUser.save();
+            return;
+        }
+        catch (ParseException e) {
+            Log.d("debugging", "save failed, attempt background");
+            Log.d("debugging", e.getMessage());
+            mCurrentUser.saveInBackground();
+        }
+    }
+
+    public Boolean checkSubscription(String category) {
+        ParseRelation<ParseObject> relation = ParseUser.getCurrentUser().getRelation("categories");
+
+        ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
+
+        subscriptionsQuery.whereEqualTo("category", category);
+        List<ParseObject> subscriptions = new ArrayList<>();
+        try {
+            subscriptions = subscriptionsQuery.find();
+            //Log.d("debugging", "subscription length: " + subscriptions.toString());
+        }
+        catch (ParseException e) {
+            Log.d("debugging", "some error on checking subscription");
+            Log.d("debugging", e.getMessage());
+            // some error
+        }
+
+        return subscriptions.size() != 0;
     }
 
     public Boolean checkEmailVerification(String email) {
@@ -86,34 +174,55 @@ public class ParseWrapper {
     }
 
     public void pushPost(Posts post) {
-        ParseObject parsePost = new ParseObject("ParsePosts");
+
+        final ParseObject parsePost = new ParseObject("ParsePosts");
 
         parsePost.put("item", post.mItem);
         parsePost.put("description", post.mDescription);
         parsePost.put("category", post.mCategory);
+        parsePost.put("image", post.mImage);
+        parsePost.put("contact", post.mContact);
+        parsePost.put("userID", ParseUser.getCurrentUser().getObjectId());
 
-//        For future post images
-//        ParseFile picture = new ParseFile("image.png", post.picture);
-//        parsePost.put("picture", picture);
 
 //        Security settings for post objects, public read/private write
         ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
+        try {
+            parsePost.save();
+        }
+        catch (ParseException e) {
+            Log.d("debugging", "save failed, attempt background");
+            Log.d("debugging", e.getMessage());
+            parsePost.saveInBackground();
+        }
 
-        parsePost.saveInBackground();
+        JSONObject data = null;
+        try {
+            data = new JSONObject(
+                    "{\"alert\": \"A new item is available!\", " +
+                    "\"title\": \"Check out Clare's List!\"}");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ParsePush push = new ParsePush();
+        push.setChannel(post.mCategory);
+        push.setData(data);
+        push.sendInBackground();
 
         // Set post's ID
         post.setmID(parsePost.getObjectId());
+
     }
 
-    public void deletePost(Posts post) {
-        String postID = post.getID();
-
+    public void deletePost(String postID) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
+                    Log.d("delete", "about to delete!");
                     object.deleteInBackground();
                 } else {
                     // something went wrong
@@ -131,94 +240,61 @@ public class ParseWrapper {
         query.setLimit(10);
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"), parsePost.getString("category")));
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> tempPostsList, ParseException e) {
-//                if (e == null) {
-//                    for (ParseObject post : tempPostsList) {
-//                        postsList.add(new Posts(post.getString("item"), post.getString("description")));
-//                    }
-//                    //Log.d("score", "Retrieved " + scoreList.size() + " scores");
-//                } else {
-//                    //Log.d("score", "Error: " + e.getMessage());
-//                }
-//            }
-//        });
+
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
         return postsList;
     }
 
-//    public List<Pair<String,String>> getPostInfo()
-//    {
-//        final ArrayList<Pair<String,String>> pairList = new ArrayList<>();
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePost");
-//        query.orderByDescending("createdAt");
-//        query.setLimit(10);
-//
-//        try {
-//            for (ParseObject parsePost : query.find()) {
-//                Log.d("debugging search", "GOT A THING");
-//                //Log.d("debugging search", "pair: " + parsePost.getString("description"));
-//                //new Pair<>(parsePost.getString("description"),
-//                pairList.add(Pair.create(parsePost.getString("description"),parsePost.getObjectId()));
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return pairList;
-//    }
+    public List<Posts> getPostsWithOwner(String userID) {
+        Log.d("user", "in parse wrapper");
+        Log.d("user", userID);
+        final ArrayList<Posts> postsList = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
+        query.whereEqualTo("userID", userID);
+        query.orderByDescending("createdAt");
+        try {
+            for (ParseObject parsePost : query.find()) {
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (Posts post : postsList) {
+            Log.v(post.getItem(), post.getDescription());
+        }
+        Log.d("user", String.valueOf(postsList.size()));
+        return postsList;
+    }
+
 
     public List<Posts> getPostsWithKey(String key, String category) {
         final List<Posts> completePosts = getPostsInCategory(category);
         final List<Posts> postsList = new ArrayList<>();
 
-        Log.d("debugging search", "initial: " + Integer.toString(postsList.size()));
-
         for (Posts post : completePosts) {
-            Log.d("debugging search", "desc: " + post.mDescription);
             String lowDescription = post.mDescription.toLowerCase();
             String lowItem = post.mItem.toLowerCase();
             if (lowDescription.contains(key) || lowItem.contains(key)) {
-                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory));
+                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory, post.mImage, post.mContact));
             }
         }
 
         return postsList;
     }
-
-//        if (pairList != null)
-//        {
-//            Log.d("debugging search", "initial: " + Integer.toString(pairList.size()));
-//
-//        }
-//        for (Pair<String,String> pair : pairList)
-//        {
-//            Log.d("debugging search", "first:" + pair.first);
-//            if (pair.first.contains(phrase))
-//            {
-//                //Log.d("debugging search", "found object with descrip" + pair.first);
-//                //Add that post to the list of posts
-//                ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
-//                query.getInBackground(pair.second, new GetCallback<ParseObject>() {
-//                    public void done(ParseObject object, ParseException e) {
-//                        if (e == null) {
-//                            // object will be post
-//                            postsList.add(new Posts(object.getString("item"), object.getString("description"), object.getString("category")));
-//                        } else {
-//                            // something went wrong
-//                        }
-//                    }
-//                });
-//            }
-//        }
-//
 
 
     public String getUserID() { return userID; }

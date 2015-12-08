@@ -3,6 +3,7 @@ package com.example.wchen.clareslist;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,11 +70,40 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        String category = mCategory.get(position);
-        TextView itemView = viewHolder.categoryTextView;
+        final ParseWrapper parse = new ParseWrapper();
+        final String category = mCategory.get(position);
+        final TextView itemView = viewHolder.categoryTextView;
         itemView.setText(category);
-        Button button = viewHolder.subButton;
-        button.setText("Subscribe");
+        final Button button = viewHolder.subButton;
+        System.out.println(category);
+        System.out.println(parse.checkSubscription(category));
+        if (parse.checkSubscription(category)) {
+            button.setText("Unsubscribe");
+            button.setEnabled(true);
+        }
+        else {
+            button.setText("Subscribe");
+            button.setEnabled(true);
+        }
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String sub = button.getText().toString();
+                if (sub == "Subscribe") {
+                    parse.subscribeUser(category, true);
+                    Log.d("DEBUGGGINGG", category);
+                } else {
+                    parse.subscribeUser(category, false);
+                }
+                if (parse.checkSubscription(category)) {
+                    button.setText("Unsubscribe");
+                    button.setEnabled(true);
+                }
+                else {
+                    button.setText("Subscribe");
+                    button.setEnabled(true);
+                }
+            }
+        });
     }
 
     @Override

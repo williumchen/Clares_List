@@ -20,10 +20,10 @@ public class ResizableImageView extends ImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
         Drawable d = getDrawable();
-        if(d!=null){
+        if(d != null){
             // ceil not round - avoid thin vertical gaps along the left/right edges
             int width = MeasureSpec.getSize(widthMeasureSpec);
-            //int height = (int) Math.ceil((float) width * (float) d.getIntrinsicHeight() / (float) d.getIntrinsicWidth());
+            // 400 is fixed height of the image, so that it is cropped
             setMeasuredDimension(width, 400);
         }else{
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
