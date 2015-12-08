@@ -34,10 +34,8 @@ public class MainActivity extends Activity {
         // Initialize the recycler view
         recList = (RecyclerView) findViewById(R.id.cardList);
         // Connect adapter
-
         pw = new ParseWrapper();
         PostAdapter adapter = new PostAdapter(pw.getPostsInCategory(category));
-
         recList.setAdapter(adapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
         // Initialize swipe to refresh layout
