@@ -79,19 +79,6 @@ public class ParseWrapper {
             Log.d("debugging user", "log-in failed");
             Log.d("debugging user", e.getMessage());
         }
-//        ParseUser.logInInBackground(email, password, new LogInCallback() {
-//            public void done(ParseUser user, ParseException e) {
-//                if (user != null) {
-//                    currentUser = user;
-//                    userID = user.getObjectId();
-//                    // Hooray! The user is logged in.
-//                } else {
-//                    // Sign up failed. Look at the ParseException to see what happened.
-//                    Log.d("debugging user", "Log-in failed");
-//                    Log.d("debugging user", e.getMessage());
-//                }
-//            }
-//        });
     }
 
     public ParseObject getCategory(String category) {
@@ -112,13 +99,6 @@ public class ParseWrapper {
 
     public void subscribeUser(String category, boolean add) {
         ParseObject myCategory = getCategory(category);
-//        try {
-//            myCategory.save();
-//        }
-//        catch (ParseException e) {
-//            Log.d("debugging", "didn't work save category");
-//
-//        }
         ParseUser mCurrentUser = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = mCurrentUser.getRelation("categories");
         //final boolean[] subscribe = {checkSubscription(category)};
@@ -139,12 +119,12 @@ public class ParseWrapper {
         subscribed = subscriptions.size() != 0;
         if(add && !subscribed) {
             relation.add(myCategory);
-            ParsePush.subscribeInBackground("Giants");
+            ParsePush.subscribeInBackground(category);
         }
         else if (!add && subscribed) {
             Log.d("debugging", "attempted to remove");
             relation.remove(myCategory);
-            ParsePush.unsubscribeInBackground("Giants");
+            ParsePush.unsubscribeInBackground(category);
         }
         Log.d("debugging", mCurrentUser.getObjectId());
         try {
@@ -177,33 +157,6 @@ public class ParseWrapper {
         }
 
         return subscriptions.size() != 0;
-
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        ParseRelation relation = currentUser.getRelation("categories");
-//        ParseObject myCategory = new ParseObject("Category");
-//        myCategory.put("category", category);
-//        relation.add(myCategory);
-//        try {
-//            relation.getQuery().find();
-//        }
-//        catch (ParseException e) {
-//             // do something with this exception
-//        }
-//        return true;
-
-
-//        final boolean[] subscribe = {false};
-//        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> results, ParseException e) {
-//                if (e == null) {
-//                    Log.d("debugging", "test");
-//                    subscribe[0] = true;
-//                } else {
-//                    // no subscriptions
-//                }
-//            }
-//        });
-        //return subscribe[0];
     }
 
     public Boolean checkEmailVerification(String email) {
