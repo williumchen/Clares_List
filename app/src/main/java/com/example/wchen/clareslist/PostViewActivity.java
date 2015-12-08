@@ -17,14 +17,19 @@ public class PostViewActivity extends Activity {
         // Initialize the item and description view objects
         TextView txtItem = (TextView) findViewById(R.id.txtItem);
         TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
+        TextView txtContact = (TextView) findViewById(R.id.txtContact);
         // Fetch intent and obtain item and description strings
         Intent intent = getIntent();
         String item = intent.getStringExtra("item");
         String description = intent.getStringExtra("description");
+        String contact = intent.getStringExtra("contact");
+
         // Set item and description view objects to their strings
         txtItem.setText(item);
         txtDescription.setText(description);
+        txtContact.setText(contact);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

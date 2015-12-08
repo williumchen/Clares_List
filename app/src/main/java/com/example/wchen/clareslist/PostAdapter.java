@@ -2,6 +2,8 @@ package com.example.wchen.clareslist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView nameTextView;
         protected TextView descriptionTextView;
+        protected TextView contactTextView;
         protected ResizableImageView itemImage;
         private Context context;
 
@@ -26,7 +29,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // Fetch the item and description view objects in the recycler view
             nameTextView = (TextView) itemView.findViewById(R.id.item);
             descriptionTextView = (TextView) itemView.findViewById(R.id.description);
-            //itemImage = (ResizableImageView) itemView.findViewById(R.id.picture);
+            contactTextView = (TextView) itemView.findViewById(R.id.contact);
+            itemImage = (ResizableImageView) itemView.findViewById(R.id.picture);
             this.context = context;
             // Set itemView to be an onclick listener
             itemView.setOnClickListener(this);
@@ -38,6 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             Intent nextScreen = new Intent(view.getContext(), PostViewActivity.class);
             nextScreen.putExtra("item", nameTextView.getText().toString());
             nextScreen.putExtra("description", descriptionTextView.getText().toString());
+            nextScreen.putExtra("contact", contactTextView.getText().toString());
             view.getContext().startActivity(nextScreen);
             //Toast.makeText(context, nameTextView.getText(), Toast.LENGTH_SHORT).show();
         }
@@ -68,6 +73,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         itemView.setText(post.getItem());
         TextView descView = viewHolder.descriptionTextView;
         descView.setText(post.getDescription());
+        TextView contView = viewHolder.contactTextView;
+        contView.setText(post.getContact());
+        byte[] data = post.getImage();
+        if (data != null) {
+            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+            ResizableImageView imgView = viewHolder.itemImage;
+            imgView.setImageBitmap(bmp);
+        }
     }
 
     @Override

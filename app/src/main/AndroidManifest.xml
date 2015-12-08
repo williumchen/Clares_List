@@ -10,17 +10,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <!--
-      IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
-      to match your app's package name + ".permission.C2D_MESSAGE".
-    -->
     <permission android:protectionLevel="signature"
         android:name="com.example.wchen.clareslist.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.example.wchen.clareslist.permission.C2D_MESSAGE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
-        android:name="com.example.wchen.clareslist.ParseApplication"
+        android:name=".ParseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,18 +23,18 @@
         <activity
             android:name=".CategoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/app_name"
+            android:parentActivityName=".IntermediateActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.IntermediateActivity" />
         </activity>
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:parentActivityName=".CategoryActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.wchen.clareslist.CategoryActivity" />
@@ -54,6 +49,7 @@
         </activity>
         <activity
             android:name=".SubmitViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_submit_view"
             android:parentActivityName=".MainActivity" >
             <meta-data
@@ -62,7 +58,33 @@
         </activity>
         <activity
             android:name=".SearchResultsViewActivity"
-            android:label="@string/title_activity_search_results_view" >
+            android:label="@string/title_activity_search_results_view"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.MainActivity" />
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".IntermediateActivity"
+            android:label="@string/title_activity_intermediate" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".UserPostViewActivity"
+            android:label="@string/title_activity_user_post_view" >
         </activity>
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParsePushBroadcastReceiver"
