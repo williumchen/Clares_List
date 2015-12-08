@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         protected TextView nameTextView;
         protected TextView descriptionTextView;
         protected TextView contactTextView;
+        protected TextView idTextView;
         protected ResizableImageView itemImage;
         private Context context;
 
@@ -30,6 +32,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             nameTextView = (TextView) itemView.findViewById(R.id.item);
             descriptionTextView = (TextView) itemView.findViewById(R.id.description);
             contactTextView = (TextView) itemView.findViewById(R.id.contact);
+            // post id will not be shown
+            idTextView = (TextView) itemView.findViewById(R.id.info);
             itemImage = (ResizableImageView) itemView.findViewById(R.id.picture);
             this.context = context;
             // Set itemView to be an onclick listener
@@ -39,7 +43,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         @Override
         public void onClick(View view) {
             // On click, send intent containing the item and description of the card
-            Intent nextScreen = new Intent(view.getContext(), PostViewActivity.class);
+            Intent nextScreen;
+            if (view.getContext() instanceof UserPostsListActivity)
+            {
+                nextScreen = new Intent(view.getContext(), UserPostViewActivity.class);
+                nextScreen.putExtra("id", idTextView.getText().toString());
+            }
+            else{
+                nextScreen = new Intent(view.getContext(), PostViewActivity.class);
+            }
             nextScreen.putExtra("item", nameTextView.getText().toString());
             nextScreen.putExtra("description", descriptionTextView.getText().toString());
             nextScreen.putExtra("contact", contactTextView.getText().toString());
@@ -75,6 +87,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         descView.setText(post.getDescription());
         TextView contView = viewHolder.contactTextView;
         contView.setText(post.getContact());
+        TextView idView = viewHolder.idTextView;
+        if (post.getID() == null)
+        {
+            Log.d("id", "why?");
+        }
+        else{
+            Log.d("id", post.getID());
+        }
+        idView.setText(post.getID());
         byte[] data = post.getImage();
         if (data != null) {
             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);

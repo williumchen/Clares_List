@@ -1,11 +1,11 @@
 package com.example.wchen.clareslist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,12 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 
-/**
- * Created by wchen on 10/5/15.
- */
-public class SubmitViewActivity extends Activity {
+public class EditSubmitViewActivity extends AppCompatActivity {
 
     ImageView postImageView;
     byte[] noImg = null;
@@ -27,32 +25,20 @@ public class SubmitViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_submit_view);
-        // Grab intent on click of floating action button
-        Intent intent = getIntent();
-//        final int edit = intent.getIntExtra("id", 0);
-        final String category = intent.getStringExtra("category");
+        setContentView(R.layout.activity_edit_submit_view);
 
-        // Initialize parse db, and grab item / desc from view
         final ParseWrapper parse = new ParseWrapper();
         final EditText newItem = (EditText) findViewById(R.id.submit_item);
         final EditText newDesc = (EditText) findViewById(R.id.submit_description);
         final EditText newContact = (EditText) findViewById(R.id.submit_contact);
 
-
-        // Change edittext to drop down menu later
         final Spinner newCategory = (Spinner) findViewById(R.id.submit_category);
+        newCategory.setSelection(0);
 
-        // this should be changed to an enumeration in the constants class
-        if (category.equals("Furniture")) newCategory.setSelection(0);
-        if (category.equals("Appliances")) newCategory.setSelection(1);
-        if (category.equals("Books")) newCategory.setSelection(2);
-        if (category.equals("Electronics")) newCategory.setSelection(3);
-        if (category.equals("Clothes")) newCategory.setSelection(4);
-        if (category.equals("Shoes")) newCategory.setSelection(5);
-        if (category.equals("Tickets")) newCategory.setSelection(6);
-        if (category.equals("Misc")) newCategory.setSelection(7);
-
+        Intent intent = getIntent();
+        newItem.setText(intent.getStringExtra("item"));
+        newDesc.setText(intent.getStringExtra("description"));
+        newContact.setText(intent.getStringExtra("contact"));
 
         final Button uploadBtn = (Button) findViewById(R.id.upload_button);
         postImageView = (ImageView) findViewById(R.id.image);
@@ -108,7 +94,7 @@ public class SubmitViewActivity extends Activity {
                 Posts newPost = new Posts(itemString, descString, categoryString, image, contactString);
                 // Push post to db
                 parse.pushPost(newPost);
-                Toast.makeText(getBaseContext(), "Post successfully added", Toast.LENGTH_SHORT).show();
+
                 finish();
             }
         });

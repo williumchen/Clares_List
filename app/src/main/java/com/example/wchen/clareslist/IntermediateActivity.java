@@ -24,6 +24,13 @@ public class IntermediateActivity extends Activity {
             }
         });
 
+        postsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent nextScreen = new Intent(v.getContext(), UserPostsListActivity.class);
+                v.getContext().startActivity(nextScreen);
+            }
+        });
+
     }
 
     @Override

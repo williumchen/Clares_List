@@ -41,6 +41,7 @@
         </activity>
         <activity
             android:name=".PostViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_post_view"
             android:parentActivityName=".MainActivity" >
             <meta-data
@@ -58,6 +59,7 @@
         </activity>
         <activity
             android:name=".SearchResultsViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_search_results_view"
             android:parentActivityName=".MainActivity" >
             <meta-data
@@ -77,6 +79,7 @@
         </activity>
         <activity
             android:name=".IntermediateActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_intermediate" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -84,7 +87,27 @@
         </activity>
         <activity
             android:name=".UserPostViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_user_post_view" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.UserPostsListActivity" />
+        </activity>
+        <activity
+            android:name=".UserPostsListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_user_posts_list" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.IntermediateActivity" />
+        </activity>
+        <activity
+            android:name=".EditSubmitViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_edit_submit_view" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wchen.clareslist.UserPostsListActivity" />
         </activity>
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParsePushBroadcastReceiver"

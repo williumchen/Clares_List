@@ -225,11 +225,11 @@ public class ParseWrapper {
         parsePost.put("category", post.mCategory);
         parsePost.put("image", post.mImage);
         parsePost.put("contact", post.mContact);
-        parsePost.put("userID", ParseUser.getCurrentUser());
+        parsePost.put("userID", ParseUser.getCurrentUser().getObjectId());
 
 
 //        Security settings for post objects, public read/private write
-        ParseACL postsACL = new ParseACL(currentUser);
+        ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
         try {
@@ -250,6 +250,7 @@ public class ParseWrapper {
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
+                    Log.d("delete", "about to delete!");
                     object.deleteInBackground();
                 } else {
                     // something went wrong
@@ -267,8 +268,10 @@ public class ParseWrapper {
         query.setLimit(10);
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
-                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact")));
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -281,14 +284,18 @@ public class ParseWrapper {
     }
 
     public List<Posts> getPostsWithOwner(String userID) {
+        Log.d("user", "in parse wrapper");
+        Log.d("user", userID);
         final ArrayList<Posts> postsList = new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.whereEqualTo("userID", userID);
         query.orderByDescending("createdAt");
         try {
             for (ParseObject parsePost : query.find()) {
-                postsList.add(new Posts(parsePost.getString("item"), parsePost.getString("description"),
-                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact")));
+                Posts p = new Posts(parsePost.getString("item"), parsePost.getString("description"),
+                        parsePost.getString("category"), parsePost.getBytes("image"), parsePost.getString("contact"));
+                p.setmID(parsePost.getObjectId());
+                postsList.add(p);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -297,6 +304,7 @@ public class ParseWrapper {
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
+        Log.d("user", String.valueOf(postsList.size()));
         return postsList;
     }
 

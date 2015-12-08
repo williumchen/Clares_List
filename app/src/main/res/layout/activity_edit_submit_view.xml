@@ -1,0 +1,91 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        tools:context="com.example.wchen.clareslist.EditSubmitViewActivity">
+        <EditText
+            android:id="@+id/submit_item"
+            android:hint="Item Name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/submit_description"
+            android:hint="Description"
+            android:layout_below="@id/submit_item"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:singleLine="false"/>
+
+        <EditText
+            android:id="@+id/submit_contact"
+            android:hint="Contact Info"
+            android:layout_below="@id/submit_description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:singleLine="false"/>
+
+        <Spinner
+            android:id="@+id/submit_category"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/category"
+            android:layout_below="@id/submit_contact"
+            android:layout_marginTop="10dp"
+            android:spinnerMode="dropdown"/>
+
+        <!--<AutoCompleteTextView-->
+        <!--android:layout_width=""-->
+        <!--android:layout_height="" />-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/submit_category"
+            android:text="Image to be Uploaded: "
+            android:layout_marginTop="10dp"
+            android:id="@+id/info" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:adjustViewBounds="false"
+            android:layout_below="@id/info"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/no_image" />
+
+        <Button
+            android:id="@+id/upload_button"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/image"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Choose Image"
+            android:background="@color/plus"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/upload_button"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            android:text="Submit"
+            android:background="@color/plus"
+            android:textColor="#FFFFFF"/>
+
+    </RelativeLayout>
+</ScrollView>

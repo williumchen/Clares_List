@@ -22,7 +22,6 @@ public class Posts {
         mCategory = category;
         mImage = image;
         mContact = contact;
-
     }
 
     // Returns the item of post

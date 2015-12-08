@@ -27,4 +27,6 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_intermediate">IntermediateActivity</string>
     <string name="title_activity_user_post_view">UserPostViewActivity</string>
+    <string name="title_activity_user_posts_list">UserPostsListActivity</string>
+    <string name="title_activity_edit_submit_view">EditSubmitViewActivity</string>
 </resources>

@@ -1,15 +1,12 @@
 package com.example.wchen.clareslist;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UserPostViewActivity extends AppCompatActivity {
@@ -25,66 +22,61 @@ public class UserPostViewActivity extends AppCompatActivity {
         TextView txtItem = (TextView) findViewById(R.id.txtItem);
         TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
         TextView txtContact = (TextView) findViewById(R.id.txtContact);
-        ImageView postImg = (ImageView) findViewById(R.id.postImg);
+        //ImageView postImg = (ImageView) findViewById(R.id.postImg);
         // Fetch intent and obtain item and description strings
         Intent intent = getIntent();
-        String item = intent.getStringExtra("item");
-        String description = intent.getStringExtra("description");
-        String contact = intent.getStringExtra("contact");
+        final String item = intent.getStringExtra("item");
+        final String description = intent.getStringExtra("description");
+        final String contact = intent.getStringExtra("contact");
+        //final String category = intent.getStringExtra("category");
 
         final String postID = intent.getStringExtra("id");
-        final byte[] image = intent.getByteArrayExtra("image");
+        //final byte[] image = intent.getByteArrayExtra("image");
 
         // Set item, description, and contact view objects to their strings
         txtItem.setText(item);
         txtDescription.setText(description);
         txtContact.setText(contact);
-        if (image != null) {
-            Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
-            postImg.setImageBitmap(bmp);
-        }
+//        if (image != null) {
+//            Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
+//            postImg.setImageBitmap(bmp);
+//        }
 
         final Button editBtn = (Button) findViewById(R.id.edit_button);
         final Button deleteBtn = (Button) findViewById(R.id.delete_button);
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d("delete", postID);
                 parse.deletePost(postID);
-                Intent nextScreen = new Intent(v.getContext(), CategoryActivity.class);
+                Intent nextScreen = new Intent(v.getContext(), UserPostsListActivity.class);
                 v.getContext().startActivity(nextScreen);
+                finish();
             }
         });
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent();
-
+                Intent nextScreen = new Intent(v.getContext(), EditSubmitViewActivity.class);
+                nextScreen.putExtra("item", item);
+                nextScreen.putExtra("description", description);
+                nextScreen.putExtra("contact", contact);
                 parse.deletePost(postID);
-                Intent nextScreen = new Intent(v.getContext(), SubmitViewActivity.class);
                 v.getContext().startActivity(nextScreen);
+                finish();
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user_post_view, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Get the back button to work
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
