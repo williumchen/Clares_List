@@ -43,7 +43,6 @@ public class ParseWrapper {
         ParseUser user = new ParseUser();
 
         // Add email verification regex here
-
         user.setUsername(email);
         user.setPassword(password);
         // email is username for convenience
@@ -56,14 +55,12 @@ public class ParseWrapper {
             public void done(ParseException e) {
                 if (e == null) {
                     // Hooray! Let them use the app now.
-
                     // retrieve the object ID
                     currentUser = ParseUser.getCurrentUser();
                     userID = currentUser.getObjectId();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
-                    Log.d("debugging user", "log-in failed");
                 }
             }
         });
@@ -83,15 +80,12 @@ public class ParseWrapper {
 
     public ParseObject getCategory(String category) {
         ParseQuery<ParseObject> categoryQuery = ParseQuery.getQuery("Category");
-        Log.d("debugging GGGGGGGG", category);
         categoryQuery.whereEqualTo("category", category);
         try {
             return categoryQuery.getFirst();
         }
         catch (ParseException e) {
             // some error
-            Log.d("debugging", "FAILED GET CATEGORY");
-            Log.d("debugging", e.getMessage());
             return new ParseObject("Category");
         }
 
@@ -112,7 +106,6 @@ public class ParseWrapper {
         }
         catch (ParseException e) {
             //
-            Log.d("debugging", "didn't work");
             return;
         }
         subscribed = subscriptions.size() != 0;
@@ -121,18 +114,14 @@ public class ParseWrapper {
             ParsePush.subscribeInBackground(category);
         }
         else if (!add && subscribed) {
-            Log.d("debugging", "attempted to remove");
             relation.remove(myCategory);
             ParsePush.unsubscribeInBackground(category);
         }
-        Log.d("debugging", mCurrentUser.getObjectId());
         try {
             mCurrentUser.save();
             return;
         }
         catch (ParseException e) {
-            Log.d("debugging", "save failed, attempt background");
-            Log.d("debugging", e.getMessage());
             mCurrentUser.saveInBackground();
         }
     }
@@ -148,8 +137,6 @@ public class ParseWrapper {
             subscriptions = subscriptionsQuery.find();
         }
         catch (ParseException e) {
-            Log.d("debugging", "some error on checking subscription");
-            Log.d("debugging", e.getMessage());
             // some error
         }
 
@@ -192,8 +179,6 @@ public class ParseWrapper {
             parsePost.save();
         }
         catch (ParseException e) {
-            Log.d("debugging", "save failed, attempt background");
-            Log.d("debugging", e.getMessage());
             parsePost.saveInBackground();
         }
         // Create new notification
@@ -271,7 +256,6 @@ public class ParseWrapper {
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
-        Log.d("user", String.valueOf(postsList.size()));
         return postsList;
     }
 
