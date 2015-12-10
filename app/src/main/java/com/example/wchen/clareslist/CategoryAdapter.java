@@ -3,7 +3,6 @@ package com.example.wchen.clareslist;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,8 +74,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         final TextView itemView = viewHolder.categoryTextView;
         itemView.setText(category);
         final Button button = viewHolder.subButton;
-        System.out.println(category);
-        System.out.println(parse.checkSubscription(category));
         if (parse.checkSubscription(category)) {
             button.setText("Unsubscribe");
             button.setEnabled(true);

@@ -16,8 +16,6 @@ public class CategoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_rc);
 
-        pw = new ParseWrapper();
-        pw.maybeLogInUser("mjeong+10@hmc.edu", "password");
 
         RecyclerView rvCategory = (RecyclerView) findViewById(R.id.rvCategory);
         // Create adapter passing in the sample user data

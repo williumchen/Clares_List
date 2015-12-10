@@ -45,11 +45,6 @@ public class ParseWrapper {
         // Add email verification regex here
         user.setUsername(email);
         user.setPassword(password);
-        // email is username for convenience
-        //user.setEmail(email);
-
-        // other fields can be set just like with ParseObject
-        // user.put("phone", "650-253-0000");
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
@@ -73,13 +68,17 @@ public class ParseWrapper {
             userID = currentUser.getObjectId();
         }
         catch (ParseException e) {
-            Log.d("debugging user", "log-in failed");
-            Log.d("debugging user", e.getMessage());
+            Log.d("debug", "log in failed");
+            Log.d("debug", e.getMessage());
+            maybeCreateUser(email, password);
+            maybeLogInUser(email, password);
         }
     }
 
     public ParseObject getCategory(String category) {
+        // create parse query
         ParseQuery<ParseObject> categoryQuery = ParseQuery.getQuery("Category");
+        // find specific category
         categoryQuery.whereEqualTo("category", category);
         try {
             return categoryQuery.getFirst();
@@ -92,12 +91,12 @@ public class ParseWrapper {
     }
 
     public void subscribeUser(String category, boolean add) {
+        // User will subscribe to a category such that they have
+        // a relation to that category
         ParseObject myCategory = getCategory(category);
         ParseUser mCurrentUser = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = mCurrentUser.getRelation("categories");
-
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
-
         subscriptionsQuery.whereEqualTo("category", category);
         List<ParseObject> subscriptions;
         boolean subscribed;
@@ -202,9 +201,11 @@ public class ParseWrapper {
 
     public void deletePost(String postID) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
+        // query to get the post with the specific postID
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
+                    // delete parse object
                     object.deleteInBackground();
                 } else {
                     // something went wrong
@@ -218,6 +219,7 @@ public class ParseWrapper {
         final ArrayList<Posts> postsList = new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.whereEqualTo("category", category);
+        // reverse chronological order
         query.orderByDescending("createdAt");
         query.setLimit(10);
         try {
