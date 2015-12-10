@@ -101,7 +101,6 @@ public class ParseWrapper {
         ParseObject myCategory = getCategory(category);
         ParseUser mCurrentUser = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = mCurrentUser.getRelation("categories");
-        //final boolean[] subscribe = {checkSubscription(category)};
 
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
 
@@ -119,12 +118,12 @@ public class ParseWrapper {
         subscribed = subscriptions.size() != 0;
         if(add && !subscribed) {
             relation.add(myCategory);
-            ParsePush.subscribeInBackground("Giants");
+            ParsePush.subscribeInBackground(category);
         }
         else if (!add && subscribed) {
             Log.d("debugging", "attempted to remove");
             relation.remove(myCategory);
-            ParsePush.unsubscribeInBackground("Giants");
+            ParsePush.unsubscribeInBackground(category);
         }
         Log.d("debugging", mCurrentUser.getObjectId());
         try {
@@ -140,7 +139,6 @@ public class ParseWrapper {
 
     public Boolean checkSubscription(String category) {
         ParseRelation<ParseObject> relation = ParseUser.getCurrentUser().getRelation("categories");
-        //final boolean[] subscribe = {checkSubscription(category)};
 
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
 
@@ -156,33 +154,6 @@ public class ParseWrapper {
         }
 
         return subscriptions.size() != 0;
-
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        ParseRelation relation = currentUser.getRelation("categories");
-//        ParseObject myCategory = new ParseObject("Category");
-//        myCategory.put("category", category);
-//        relation.add(myCategory);
-//        try {
-//            relation.getQuery().find();
-//        }
-//        catch (ParseException e) {
-//             // do something with this exception
-//        }
-//        return true;
-
-
-//        final boolean[] subscribe = {false};
-//        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> results, ParseException e) {
-//                if (e == null) {
-//                    Log.d("debugging", "test");
-//                    subscribe[0] = true;
-//                } else {
-//                    // no subscriptions
-//                }
-//            }
-//        });
-        //return subscribe[0];
     }
 
     public Boolean checkEmailVerification(String email) {
