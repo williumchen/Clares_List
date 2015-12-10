@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,11 +25,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Get intent from CategoryActivity and determine category
         Intent categoryIntent = getIntent();
         final String category = categoryIntent.getStringExtra("category");
-        Log.d("category is ", category);
 
         // Initialize the recycler view
         recList = (RecyclerView) findViewById(R.id.cardList);
@@ -66,14 +63,6 @@ public class MainActivity extends Activity {
                 v.getContext().startActivity(searchScreen);
             }
         });
-//        recList.setHasFixedSize(true);
-//        LinearLayoutManager llm = new LinearLayoutManager(this);
-//        llm.setOrientation(LinearLayoutManager.VERTICAL);
-//        recList.setLayoutManager(llm);
-//
-//        PostAdapter pa = new PostAdapter(createList(30));
-//        recList.setAdapter(pa);
-
         // Swipe to refresh widget
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

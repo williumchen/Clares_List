@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -92,7 +92,6 @@ public class SubmitViewActivity extends Activity {
                 bitmap.compress(Bitmap.CompressFormat.WEBP, 1, stream);
                 byte[] image = stream.toByteArray();
                 int length = image.length;
-                Log.d("size of image", String.valueOf(length));
                 // if the image exceeds the allowable number of bytes
                 if (image.length >= max)
                 {
@@ -102,7 +101,7 @@ public class SubmitViewActivity extends Activity {
                     // Code from:
                     // http://developer.android.com/guide/topics/ui/notifiers/toasts.html
                     Context context = getApplicationContext();
-                    CharSequence text = "Image too big. Please choose another!";
+                    CharSequence text = "Image too big. Go to My Posts and choose another!";
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();

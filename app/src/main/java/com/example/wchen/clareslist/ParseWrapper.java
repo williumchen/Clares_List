@@ -146,7 +146,6 @@ public class ParseWrapper {
         List<ParseObject> subscriptions = new ArrayList<>();
         try {
             subscriptions = subscriptionsQuery.find();
-            //Log.d("debugging", "subscription length: " + subscriptions.toString());
         }
         catch (ParseException e) {
             Log.d("debugging", "some error on checking subscription");
@@ -174,21 +173,21 @@ public class ParseWrapper {
     }
 
     public void pushPost(Posts post) {
-
+        // ParseObject to hold fields of post
         final ParseObject parsePost = new ParseObject("ParsePosts");
-
-        parsePost.put("item", post.mItem);
-        parsePost.put("description", post.mDescription);
-        parsePost.put("category", post.mCategory);
-        parsePost.put("image", post.mImage);
-        parsePost.put("contact", post.mContact);
+        // put each field of post into the parse object
+        parsePost.put("item", post.getItem());
+        parsePost.put("description", post.getDescription());
+        parsePost.put("category", post.getCategory());
+        parsePost.put("image", post.getImage());
+        parsePost.put("contact", post.getContact());
         parsePost.put("userID", ParseUser.getCurrentUser().getObjectId());
 
-
-//        Security settings for post objects, public read/private write
+        //Security settings for post objects, public read/private write
         ParseACL postsACL = new ParseACL(ParseUser.getCurrentUser());
         postsACL.setPublicReadAccess(true);
         parsePost.setACL(postsACL);
+        // try to save the ParseObject
         try {
             parsePost.save();
         }
@@ -197,7 +196,7 @@ public class ParseWrapper {
             Log.d("debugging", e.getMessage());
             parsePost.saveInBackground();
         }
-
+        // Create new notification
         JSONObject data = null;
         try {
             data = new JSONObject(
@@ -206,15 +205,14 @@ public class ParseWrapper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        // Push the notification
         ParsePush push = new ParsePush();
-        push.setChannel(post.mCategory);
+        push.setChannel(post.getCategory());
         push.setData(data);
         push.sendInBackground();
 
         // Set post's ID
         post.setmID(parsePost.getObjectId());
-
     }
 
     public void deletePost(String postID) {
@@ -222,7 +220,6 @@ public class ParseWrapper {
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
-                    Log.d("delete", "about to delete!");
                     object.deleteInBackground();
                 } else {
                     // something went wrong
@@ -256,8 +253,6 @@ public class ParseWrapper {
     }
 
     public List<Posts> getPostsWithOwner(String userID) {
-        Log.d("user", "in parse wrapper");
-        Log.d("user", userID);
         final ArrayList<Posts> postsList = new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.whereEqualTo("userID", userID);
@@ -286,10 +281,10 @@ public class ParseWrapper {
         final List<Posts> postsList = new ArrayList<>();
 
         for (Posts post : completePosts) {
-            String lowDescription = post.mDescription.toLowerCase();
-            String lowItem = post.mItem.toLowerCase();
+            String lowDescription = post.getDescription().toLowerCase();
+            String lowItem = post.getItem().toLowerCase();
             if (lowDescription.contains(key) || lowItem.contains(key)) {
-                postsList.add(new Posts(post.mItem, post.mDescription, post.mCategory, post.mImage, post.mContact));
+                postsList.add(new Posts(post.getItem(), post.getDescription(), post.getCategory(), post.getImage(), post.getContact()));
             }
         }
 
