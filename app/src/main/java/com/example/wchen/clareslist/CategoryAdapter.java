@@ -90,7 +90,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 String sub = button.getText().toString();
                 if (sub == "Subscribe") {
                     parse.subscribeUser(category, true);
-                    Log.d("DEBUGGGINGG", category);
                 } else {
                     parse.subscribeUser(category, false);
                 }
