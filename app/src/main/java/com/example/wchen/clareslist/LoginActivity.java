@@ -28,8 +28,10 @@ public class LoginActivity extends Activity {
         // takes us to the next screen
         loginBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // if the user has not entered any text
                 if (TextUtils.isEmpty(email.getText().toString().trim()))
                 {
+                    // tell them to enter text before they can continue
                     Context context = getApplicationContext();
                     CharSequence text = "You forgot to enter your email!";
                     int duration = Toast.LENGTH_LONG;
@@ -37,8 +39,11 @@ public class LoginActivity extends Activity {
                     toast.show();
                 }
                 else {
+                    // otherwise, either login or create a new user
                     pw.maybeLogInUser(email.getText().toString(), "password");
+                    // set this user as the current user for the device
                     pw.setCurrentUser();
+                    // go to the home screen
                     Intent nextScreen = new Intent(v.getContext(), IntermediateActivity.class);
                     v.getContext().startActivity(nextScreen);
                     finish();
