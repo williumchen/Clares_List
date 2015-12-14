@@ -43,27 +43,19 @@ public class ParseWrapper {
         ParseUser user = new ParseUser();
 
         // Add email verification regex here
-
         user.setUsername(email);
         user.setPassword(password);
-        // email is username for convenience
-        //user.setEmail(email);
-
-        // other fields can be set just like with ParseObject
-        // user.put("phone", "650-253-0000");
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
                     // Hooray! Let them use the app now.
-
                     // retrieve the object ID
                     currentUser = ParseUser.getCurrentUser();
                     userID = currentUser.getObjectId();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
-                    Log.d("debugging user", "log-in failed");
                 }
             }
         });
@@ -76,34 +68,35 @@ public class ParseWrapper {
             userID = currentUser.getObjectId();
         }
         catch (ParseException e) {
-            Log.d("debugging user", "log-in failed");
-            Log.d("debugging user", e.getMessage());
+            Log.d("debug", "log in failed");
+            Log.d("debug", e.getMessage());
+            maybeCreateUser(email, password);
+            maybeLogInUser(email, password);
         }
     }
 
     public ParseObject getCategory(String category) {
+        // create parse query
         ParseQuery<ParseObject> categoryQuery = ParseQuery.getQuery("Category");
-        Log.d("debugging GGGGGGGG", category);
+        // find specific category
         categoryQuery.whereEqualTo("category", category);
         try {
             return categoryQuery.getFirst();
         }
         catch (ParseException e) {
             // some error
-            Log.d("debugging", "FAILED GET CATEGORY");
-            Log.d("debugging", e.getMessage());
             return new ParseObject("Category");
         }
 
     }
 
     public void subscribeUser(String category, boolean add) {
+        // User will subscribe to a category such that they have
+        // a relation to that category
         ParseObject myCategory = getCategory(category);
         ParseUser mCurrentUser = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = mCurrentUser.getRelation("categories");
-
         ParseQuery<ParseObject> subscriptionsQuery = relation.getQuery();
-
         subscriptionsQuery.whereEqualTo("category", category);
         List<ParseObject> subscriptions;
         boolean subscribed;
@@ -112,7 +105,6 @@ public class ParseWrapper {
         }
         catch (ParseException e) {
             //
-            Log.d("debugging", "didn't work");
             return;
         }
         subscribed = subscriptions.size() != 0;
@@ -121,18 +113,14 @@ public class ParseWrapper {
             ParsePush.subscribeInBackground(category);
         }
         else if (!add && subscribed) {
-            Log.d("debugging", "attempted to remove");
             relation.remove(myCategory);
             ParsePush.unsubscribeInBackground(category);
         }
-        Log.d("debugging", mCurrentUser.getObjectId());
         try {
             mCurrentUser.save();
             return;
         }
         catch (ParseException e) {
-            Log.d("debugging", "save failed, attempt background");
-            Log.d("debugging", e.getMessage());
             mCurrentUser.saveInBackground();
         }
     }
@@ -148,8 +136,6 @@ public class ParseWrapper {
             subscriptions = subscriptionsQuery.find();
         }
         catch (ParseException e) {
-            Log.d("debugging", "some error on checking subscription");
-            Log.d("debugging", e.getMessage());
             // some error
         }
 
@@ -192,8 +178,6 @@ public class ParseWrapper {
             parsePost.save();
         }
         catch (ParseException e) {
-            Log.d("debugging", "save failed, attempt background");
-            Log.d("debugging", e.getMessage());
             parsePost.saveInBackground();
         }
         // Create new notification
@@ -217,9 +201,11 @@ public class ParseWrapper {
 
     public void deletePost(String postID) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
+        // query to get the post with the specific postID
         query.getInBackground(postID, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
+                    // delete parse object
                     object.deleteInBackground();
                 } else {
                     // something went wrong
@@ -233,6 +219,7 @@ public class ParseWrapper {
         final ArrayList<Posts> postsList = new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParsePosts");
         query.whereEqualTo("category", category);
+        // reverse chronological order
         query.orderByDescending("createdAt");
         query.setLimit(10);
         try {
@@ -271,7 +258,6 @@ public class ParseWrapper {
         for (Posts post : postsList) {
             Log.v(post.getItem(), post.getDescription());
         }
-        Log.d("user", String.valueOf(postsList.size()));
         return postsList;
     }
 

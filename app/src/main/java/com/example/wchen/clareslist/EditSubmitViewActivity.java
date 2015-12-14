@@ -1,11 +1,11 @@
 package com.example.wchen.clareslist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
-public class EditSubmitViewActivity extends AppCompatActivity {
+public class EditSubmitViewActivity extends Activity {
 
     ImageView postImageView;
     // the byte array of the default image
